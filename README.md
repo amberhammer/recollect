@@ -8,3 +8,5 @@
 - Drafted basic design of pages
 - Set up Express server
 - Researched and installed PostgreSQL
+### Week 3
+- Connected database
