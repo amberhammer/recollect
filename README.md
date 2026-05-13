@@ -6,3 +6,5 @@
 - Outlined a development plan, including API design and database schema
 ### Week 2
 - Drafted basic design of pages
+- Set up Express server
+- Researched and installed PostgreSQL
