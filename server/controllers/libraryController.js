@@ -1,4 +1,5 @@
 require("dotenv").config();
+const db = require("../db");
 
 const searchBooks = async (req, res) => {
   try {
@@ -33,4 +34,39 @@ const searchBooks = async (req, res) => {
   }
 };
 
-module.exports = { searchBooks };
+const addToLibrary = async (req, res) => {
+  try {
+    //TEMP hardcoded user id until we implement auth
+    const userId = 1;
+    const { google_books_id, title, authors, description, thumbnail, published_date } = req.body;
+    
+    if (!google_books_id || !title) {
+      return res.status(400).json({
+        message: "Required fields are missing",
+      });
+    }
+
+    const existingBook = await db.query("SELECT * FROM user_books WHERE user_id = $1 AND google_books_id = $2", [userId, google_books_id]);
+    if (existingBook.rows.length > 0) {
+      return res.status(400).json({
+        message: "Book already in library",
+      });
+    }
+
+    await db.query(
+      "INSERT INTO user_books (user_id, google_books_id, title, authors, description, thumbnail, published_date) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [userId, google_books_id, title, authors, description, thumbnail, published_date]
+    );
+
+    res.status(201).json({
+      message: "Book added to library",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Error adding book to library",
+    });
+  }
+};
+
+module.exports = { searchBooks, addToLibrary };
