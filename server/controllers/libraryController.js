@@ -96,4 +96,40 @@ const getBookById = async (req, res) => {
   }
 };
 
-module.exports = { searchBooks, addToLibrary, getAllBooks, getBookById };
+const updateBook = async (req, res) => {
+  try {
+    const userId = 1; // TEMP hardcoded user id until we implement auth
+    const { id } = req.params;
+    const { title, authors, description, thumbnail, published_date, status, rating, format } = req.body;
+    await db.query(
+      "UPDATE user_books SET title = $1, authors = $2, description = $3, thumbnail = $4, published_date = $5, status = $6, rating = $7, format = $8 WHERE user_id = $9 AND id = $10",
+      [title, authors, description, thumbnail, published_date, status, rating, format, userId, id]
+    );
+    res.json({
+      message: "Book updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Error updating book",
+    });
+  }
+};
+
+const deleteBook = async (req, res) => {
+  try {
+    const userId = 1; // TEMP hardcoded user id until we implement auth
+    const { id } = req.params;
+    await db.query("DELETE FROM user_books WHERE user_id = $1 AND id = $2", [userId, id]);
+    res.json({
+      message: "Book deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Error deleting book",
+    });
+  }
+};
+
+module.exports = { searchBooks, addToLibrary, getAllBooks, getBookById, updateBook, deleteBook };
