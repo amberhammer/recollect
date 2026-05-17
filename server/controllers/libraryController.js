@@ -36,8 +36,7 @@ const searchBooks = async (req, res) => {
 
 const addToLibrary = async (req, res) => {
   try {
-    //TEMP hardcoded user id until we implement auth
-    const userId = 1;
+    const userId = req.user.id;
     const { google_books_id, title, authors, description, thumbnail, published_date } = req.body;
     
     if (!google_books_id || !title) {
@@ -71,7 +70,7 @@ const addToLibrary = async (req, res) => {
 
 const getAllBooks = async (req, res) => {
   try {
-    const userId = 1; // TEMP hardcoded user id until we implement auth
+    const userId = req.user.id;
     const books = await db.query("SELECT * FROM user_books WHERE user_id = $1", [userId]);
     res.json(books.rows);
   } catch (err) {
@@ -84,7 +83,7 @@ const getAllBooks = async (req, res) => {
 
 const getBookById = async (req, res) => {
   try {
-    const userId = 1; // TEMP hardcoded user id until we implement auth
+    const userId = req.user.id;
     const { id } = req.params;
     const book = await db.query("SELECT * FROM user_books WHERE user_id = $1 AND id = $2", [userId, id]);
     res.json(book.rows[0]);
@@ -98,7 +97,7 @@ const getBookById = async (req, res) => {
 
 const updateBook = async (req, res) => {
   try {
-    const userId = 1; // TEMP hardcoded user id until we implement auth
+    const userId = req.user.id;
     const { id } = req.params;
     const { title, authors, description, thumbnail, published_date, status, rating, format } = req.body;
     await db.query(
@@ -118,7 +117,7 @@ const updateBook = async (req, res) => {
 
 const deleteBook = async (req, res) => {
   try {
-    const userId = 1; // TEMP hardcoded user id until we implement auth
+    const userId = req.user.id;
     const { id } = req.params;
     await db.query("DELETE FROM user_books WHERE user_id = $1 AND id = $2", [userId, id]);
     res.json({
