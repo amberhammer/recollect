@@ -69,4 +69,31 @@ const addToLibrary = async (req, res) => {
   }
 };
 
-module.exports = { searchBooks, addToLibrary };
+const getAllBooks = async (req, res) => {
+  try {
+    const userId = 1; // TEMP hardcoded user id until we implement auth
+    const books = await db.query("SELECT * FROM user_books WHERE user_id = $1", [userId]);
+    res.json(books.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Error fetching books",
+    });
+  }
+};
+
+const getBookById = async (req, res) => {
+  try {
+    const userId = 1; // TEMP hardcoded user id until we implement auth
+    const { id } = req.params;
+    const book = await db.query("SELECT * FROM user_books WHERE user_id = $1 AND id = $2", [userId, id]);
+    res.json(book.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Error fetching book",
+    });
+  }
+};
+
+module.exports = { searchBooks, addToLibrary, getAllBooks, getBookById };
