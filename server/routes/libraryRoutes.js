@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const { searchBooks, addToLibrary, getAllBooks, getBookById, updateBook, deleteBook } = require("../controllers/libraryController");
+const authMiddleware = require("../middleware/authMiddleware");
+
+router.use(authMiddleware);
 
 router.get("/search", searchBooks);
 
