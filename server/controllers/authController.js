@@ -1,14 +1,24 @@
-const express = require('express');
 const bcrypt = require('bcrypt');
-const app = express();
-app.use(express.json());
-
 const db = require("../db");
 const generateToken = require("../utils/generateToken");
 
 const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: "Username, email, and password are required" });
+    }
+    if (password.length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters long" });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+    if (username.length < 3) {
+      return res.status(400).json({ message: "Username must be at least 3 characters long" });
+    }
 
     const existingEmail = await db.query("SELECT * FROM users WHERE email = $1", [email]);
     if (existingEmail.rows.length > 0) {
@@ -38,14 +48,18 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
     const user = await db.query("SELECT * FROM users WHERE email = $1", [email]);
     if (user.rows.length === 0) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const isMatch = await bcrypt.compare(password, user.rows[0].password_hash);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const token = generateToken(user.rows[0].id);
