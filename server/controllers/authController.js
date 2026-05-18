@@ -40,6 +40,9 @@ const registerUser = async (req, res) => {
     res.status(201).json({ message: "User registered successfully", token });
   } catch (err) {
     console.error(err);
+    if (err.message.includes("JWT_SECRET")) {
+      return res.status(500).json({ message: "Server configuration error" });
+    }
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -72,9 +75,12 @@ const loginUser = async (req, res) => {
       },
       message: "Login successful",
     });
-    
+
   } catch (err) {
     console.error(err);
+    if (err.message.includes("JWT_SECRET")) {
+      return res.status(500).json({ message: "Server configuration error" });
+    }
     res.status(500).json({ message: "Server error" });
   }
 };

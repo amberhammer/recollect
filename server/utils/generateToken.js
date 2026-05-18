@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const generateToken = (userId) => {
   if (!process.env.JWT_SECRET) {
-    return res.status(500).json({ message: "JWT secret not configured" });
+    throw new Error("JWT_SECRET is not configured in environment variables");
   }
 
   try {
@@ -16,12 +16,12 @@ const generateToken = (userId) => {
     );
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({ message: "Token has expired" });
+      throw new Error("Token has expired" );
     }
     if (err.name === 'JsonWebTokenError') {
-      return res.status(401).json({ message: "Invalid token" });
+      throw new Error("Invalid token" );
     }
-    return res.status(500).json({ message: "Server error" });
+    throw new Error("Server error" );
   }
 };
 
