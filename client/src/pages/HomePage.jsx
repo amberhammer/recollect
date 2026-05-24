@@ -10,7 +10,7 @@ export default function HomePage() {
             <div className="flex-grow flex justify-center p-4">
                 <div>
                     <h2 className="text-2xl font-bold mb-6 text-center">your library</h2>
-                    <div className="grid grid-cols-2 gap-6 h-[550px]">
+                    <div className="grid grid-cols-2 gap-5 h-[550px] w-[700px]">
                         <Cabinet collectionName="All Books" />
                         <Cabinet collectionName="Favourites" />
                         <Cabinet collectionName="Currently Reading" />
