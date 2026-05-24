@@ -1,7 +1,6 @@
-import { useState, createContext } from 'react';
+import { useState } from 'react';
 import { loginUser, registerUser } from '../api/authApi';
-
-export const AuthContext = createContext();
+import { AuthContext } from './AuthContext';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -10,21 +9,21 @@ export const AuthProvider = ({ children }) => {
   const register = async (formData) => {
     try {
       const response = await registerUser(formData);
-      return response.data;
+      return response;
     } catch (err) {
-      throw err.response.data;
+      throw err.response?.data || err.message;
     }
   };
 
   const login = async (formData) => {
     try {
       const response = await loginUser(formData);
-      const { token, user } = response.data;
+      const { token, user } = response;
       localStorage.setItem("token", token);
       setToken(token);
       setUser(user);
     } catch (err) {
-      throw err.response.data;
+      throw err.response?.data || err.message;
     }
   };
 
