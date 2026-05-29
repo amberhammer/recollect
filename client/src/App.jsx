@@ -13,7 +13,8 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/library" element={<CollectionPage />} />
-      <Route path="/book" element={<BookDetailPage />} />
+      <Route path="/library/:collection" element={<CollectionPage />} />
+      <Route path="/book/:googleBooksId" element={<BookDetailPage />} />
     </Routes>
   );
 }
