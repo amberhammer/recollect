@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <footer className="bg-taupe-200 text-black p-4 text-center absolute bottom-0 w-full">
+        <footer className="bg-taupe-200 text-black p-4 text-center sticky bottom-0 w-full">
             <p>&copy; 2026 Recollect. All rights reserved.</p>
         </footer>
     );

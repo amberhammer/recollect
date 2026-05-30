@@ -2,7 +2,7 @@ import { useState } from "react";
 import LibraryBookControls from "./LibraryBookControls";
 import AddToLibraryButton from "./AddToLibraryButton";
 
-export default function BookDetailCard( { book, inLibrary = false } ) {
+export default function BookDetailCard({ book, inLibrary = false }) {
     const [isFavorited, setIsFavorited] = useState(false);
     const [isInLibrary, setIsInLibrary] = useState(inLibrary);
 
@@ -17,7 +17,7 @@ export default function BookDetailCard( { book, inLibrary = false } ) {
     };
 
     return (
-        <div className="bg-taupe-200 rounded-4xl shadow-md w-[600px] mt-6">
+        <div className="bg-taupe-200 rounded-4xl rounded-b-none shadow-md w-[600px] mt-6">
             <div className="flex gap-6 m-8 mb-6">
                 <img src={book.thumbnail} alt={`${book.title} cover`} className="h-52 rounded" />
                 {isInLibrary ? (
@@ -46,6 +46,12 @@ export default function BookDetailCard( { book, inLibrary = false } ) {
                 </div>
                 <div className="w-1/3 px-8 py-3">
                     <p className="text-lg">{book.borrowDate || "—"}</p>
+                </div>
+            </div>
+            <div className="flex h-100">
+                <div className="w-2/3 px-8 py-3 border-r-3 border-taupe-400">
+                </div>
+                <div className="w-1/3 px-8 py-3">
                 </div>
             </div>
         </div>

@@ -16,12 +16,12 @@ export default function BookDetailPage() {
         status: "read",
         description: "A novel set in the Roaring Twenties that tells the story of the mysterious millionaire Jay Gatsby and his obsession with the beautiful Daisy Buchanan."
     };
-    
+
     return (
         <div className="min-h-screen flex flex-col">
             <NavBar />
 
-            <div className="flex-grow flex justify-center p-4">
+            <div className="flex-grow flex justify-center p-4 pb-0">
                 <BookDetailCard book={book} />
             </div>
 
