@@ -5,16 +5,38 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import CollectionPage from "./pages/CollectionPage";
 import BookDetailPage from "./pages/BookDetailPage";
+import ProtectedRoute from './routes/ProtectedRoute';
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/" element={<HomePage />} />
-      <Route path="/library" element={<CollectionPage />} />
-      <Route path="/library/:collection" element={<CollectionPage />} />
-      <Route path="/book/:googleBooksId" element={<BookDetailPage />} />
+
+      <Route path="/" element={
+        <ProtectedRoute>
+          <HomePage />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/library" element={
+        <ProtectedRoute>
+          <CollectionPage />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/library/:collection" element={
+        <ProtectedRoute>
+          <CollectionPage />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/book/:googleBooksId" element={
+        <ProtectedRoute>
+          <BookDetailPage />
+        </ProtectedRoute>
+      } />
     </Routes>
   );
 }
