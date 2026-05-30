@@ -196,29 +196,19 @@ export default function CollectionPage() {
         );
     }
 
-    //     "currently-reading": "Currently Reading",
-    //     "to-read": "To Be Read",
-    //     borrowed: "Borrowed",
-    //     borrowing: "Borrowing"
-    // };
-    // const displayName = collection ? collectionDisplayNames[collection] : "All Books";
+    if (books.length === 0) {
+        return (
+            <div className="min-h-screen flex flex-col">
+                <NavBar />
 
-    // const filteredBooks = collection
-    //     ? books.filter(book => {
-    //         if (collection === "favorites") {
-    //             return book.isFavorite;
-    //         } else if (collection === "currently-reading") {
-    //             return book.status === "currently-reading";
-    //         } else if (collection === "to-read") {
-    //             return book.status === "to-read";
-    //         } else if (collection === "borrowed") {
-    //             return book.status === "borrowed";
-    //         } else if (collection === "borrowing") {
-    //             return book.status === "borrowing";
-    //         }
-    //         return true;
-    //     })
-    //     : books;
+                <div className="flex-grow flex justify-center items-center">
+                    <p>No books found in this collection.</p>
+                </div>
+                
+                <Footer />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen flex flex-col">
