@@ -8,14 +8,14 @@ import NavBar from "../components/layout/NavBar";
 import BookGrid from "../components/books/BookGrid";
 
 export default function CollectionPage() {
-    const { collection } = useParams();
-    const { token } = useAuth();
+  const { collection } = useParams();
+  const { token } = useAuth();
 
-    const [books, setBooks] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const collections = {
+  const collections = {
     all: {
       displayName: "All Books",
     },
@@ -47,39 +47,39 @@ export default function CollectionPage() {
   const currentConfig = collections[currentCollection] || collections.all;
   const displayName = currentConfig.displayName;
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchBooks = async () => {
-        try {
-          setLoading(true);
+      try {
+        setLoading(true);
 
-          let endpoint = "/api/library";
-          if (currentCollection !== "all") {
-            endpoint = `/api/library/${currentCollection}`;
-          }
+        let endpoint = "/api/library";
+        if (currentCollection !== "all") {
+          endpoint = `/api/library/${currentCollection}`;
+        }
 
-          const response =
-            await axios.get(
-              endpoint,
-              {
-                headers: {
-                  Authorization:
-                    `Bearer ${token}`,
-                },
-              }
-            );
-
-          setBooks(response.data);
-
-        } catch (err) {
-          console.error(err);
-          setError(
-            "Failed to load books."
+        const response =
+          await axios.get(
+            endpoint,
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            }
           );
 
-        } finally {
-          setLoading(false);
-        }
-      };
+        setBooks(response.data);
+
+      } catch (err) {
+        console.error(err);
+        setError(
+          "Failed to load books."
+        );
+
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchBooks();
 
@@ -99,41 +99,41 @@ export default function CollectionPage() {
     );
   }
 
-    if (error) {
-        return (
-            <div className="min-h-screen flex flex-col">
-                <NavBar />
-
-                <div className="flex-grow flex justify-center items-center">
-                    <p className="text-red-500">{error}</p>
-                </div>
-
-                <Footer />
-            </div>
-        );
-    }
-
-    if (books.length === 0) {
-        return (
-            <div className="min-h-screen flex flex-col">
-                <NavBar />
-
-                <div className="flex-grow flex justify-center items-center">
-                    <p>No books found in this collection.</p>
-                </div>
-
-                <Footer />
-            </div>
-        );
-    }
-
+  if (error) {
     return (
-        <div className="min-h-screen flex flex-col">
-            <NavBar />
+      <div className="min-h-screen flex flex-col">
+        <NavBar />
 
-            <BookGrid displayName={displayName} books={books} />
-
-            <Footer />
+        <div className="flex-grow flex justify-center items-center">
+          <p className="text-red-500">{error}</p>
         </div>
+
+        <Footer />
+      </div>
     );
+  }
+
+  if (books.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <NavBar />
+
+        <div className="flex-grow flex justify-center items-center">
+          <p>No books found in this collection.</p>
+        </div>
+
+        <Footer />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <NavBar />
+
+      <BookGrid displayName={displayName} books={books} />
+
+      <Footer />
+    </div>
+  );
 }
