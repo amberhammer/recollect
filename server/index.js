@@ -7,6 +7,7 @@ const db = require('./db');
 
 const libraryRoutes = require('./routes/libraryRoutes');
 const authRoutes = require('./routes/authRoutes');
+const booksRoutes = require('./routes/booksRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -22,6 +23,7 @@ db.query("SELECT NOW()")
 
 app.use('/api/library', libraryRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/books', booksRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
