@@ -31,8 +31,14 @@ function App() {
           <CollectionPage />
         </ProtectedRoute>
       } />
-      
-      <Route path="/book/:googleBooksId" element={
+
+      <Route path="/library/books" element={
+
+        <BookDetailPage />
+
+      } />
+
+      <Route path="/books/:googleBooksId" element={
         <ProtectedRoute>
           <BookDetailPage />
         </ProtectedRoute>
