@@ -81,6 +81,64 @@ const getAllBooks = async (req, res) => {
   }
 };
 
+const getCollectionBooks = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { collection } = req.params;
+
+    if (!["favorites", "currently-reading", "to-read", "borrowed", "borrowing"].includes(collection)) {
+      return res.status(400).json({
+        message: "Invalid collection",
+      });
+    }
+
+    if (collection === "favorites") {
+      const books = await db.query(
+        "SELECT * FROM user_books WHERE user_id = $1 AND is_favorite = true",
+        [userId]
+      );
+      return res.json(books.rows);
+    }
+
+    if (collection === "currently-reading") {
+      const books = await db.query(
+        "SELECT * FROM user_books WHERE user_id = $1 AND status = 'currently-reading'",
+        [userId]
+      );
+      return res.json(books.rows);
+    }
+
+    if (collection === "to-read") {
+      const books = await db.query(
+        "SELECT * FROM user_books WHERE user_id = $1 AND status = 'to-read'",
+        [userId]
+      );
+      return res.json(books.rows);
+    }
+
+    if (collection === "borrowed") {
+      const books = await db.query(
+        "SELECT * FROM user_books WHERE user_id = $1 AND status = 'borrowed'",
+        [userId]
+      );
+      return res.json(books.rows);
+    }
+
+    if (collection === "borrowing") {
+      const books = await db.query(
+        "SELECT * FROM user_books WHERE user_id = $1 AND status = 'borrowing'",
+        [userId]
+      );
+      return res.json(books.rows);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Error fetching books",
+    });
+  }
+};
+
 const getBookById = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -131,4 +189,4 @@ const deleteBook = async (req, res) => {
   }
 };
 
-module.exports = { searchBooks, addToLibrary, getAllBooks, getBookById, updateBook, deleteBook };
+module.exports = { searchBooks, addToLibrary, getAllBooks, getCollectionBooks, getBookById, updateBook, deleteBook };
