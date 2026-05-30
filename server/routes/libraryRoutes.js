@@ -8,9 +8,9 @@ router.get("/search", authMiddleware, searchBooks);
 
 router.get("/", authMiddleware, getAllBooks);
 router.get("/:collection", authMiddleware, getCollectionBooks);
-router.get("/:id", authMiddleware, getBookById);
+router.get("/:google_books_id", authMiddleware, getBookById);
 router.post("/", authMiddleware, addToLibrary);
-router.put("/:id", authMiddleware, updateBook);
-router.delete("/:id", authMiddleware, deleteBook);
+router.put("/:google_books_id", authMiddleware, updateBook);
+router.delete("/:google_books_id", authMiddleware, deleteBook);
 
 module.exports = router;

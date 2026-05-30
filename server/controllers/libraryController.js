@@ -1,5 +1,6 @@
 require("dotenv").config();
 const db = require("../db");
+import { getGoogleBookById } from "../services/googleBooksService";
 
 const searchBooks = async (req, res) => {
   try {
@@ -142,9 +143,19 @@ const getCollectionBooks = async (req, res) => {
 const getBookById = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { id } = req.params;
-    const book = await db.query("SELECT * FROM user_books WHERE user_id = $1 AND id = $2", [userId, id]);
-    res.json(book.rows[0]);
+    const { google_books_id } = req.params;
+
+    const book = await getGoogleBookById(google_books_id);
+    if (!book) {
+      return res.status(404).json({
+        message: "Book not found in Google Books",
+      });
+    }
+
+    const libraryResult = await db.query("SELECT * FROM user_books WHERE user_id = $1 AND google_books_id = $2", [userId, google_books_id]);
+    const libraryEntry = libraryResult.rows[0] || null;
+
+    res.json({ book, libraryEntry });
   } catch (err) {
     console.error(err);
     res.status(500).json({
@@ -156,11 +167,11 @@ const getBookById = async (req, res) => {
 const updateBook = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { id } = req.params;
+    const { google_books_id } = req.params;
     const { title, authors, description, thumbnail, published_date, status, rating, format } = req.body;
     await db.query(
-      "UPDATE user_books SET title = $1, authors = $2, description = $3, thumbnail = $4, published_date = $5, status = $6, rating = $7, format = $8 WHERE user_id = $9 AND id = $10",
-      [title, authors, description, thumbnail, published_date, status, rating, format, userId, id]
+      "UPDATE user_books SET title = $1, authors = $2, description = $3, thumbnail = $4, published_date = $5, status = $6, rating = $7, format = $8 WHERE user_id = $9 AND google_books_id = $10",
+      [title, authors, description, thumbnail, published_date, status, rating, format, userId, google_books_id]
     );
     res.json({
       message: "Book updated successfully",
@@ -176,8 +187,8 @@ const updateBook = async (req, res) => {
 const deleteBook = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { id } = req.params;
-    await db.query("DELETE FROM user_books WHERE user_id = $1 AND id = $2", [userId, id]);
+    const { google_books_id } = req.params;
+    await db.query("DELETE FROM user_books WHERE user_id = $1 AND google_books_id = $2", [userId, google_books_id]);
     res.json({
       message: "Book deleted successfully",
     });
