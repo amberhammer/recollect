@@ -38,8 +38,8 @@ const searchBooks = async (req, res) => {
 const addToLibrary = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { google_books_id, title, authors, description, thumbnail, published_date } = req.body;
-
+        const { google_books_id, title, authors, description, thumbnail, published_date, status, rating, format } = req.body;
+        console.log("Adding book to library:", { userId, google_books_id, title, authors, description, thumbnail, published_date, status, rating, format });
         if (!google_books_id || !title) {
             return res.status(400).json({
                 message: "Required fields are missing",
@@ -54,8 +54,8 @@ const addToLibrary = async (req, res) => {
         }
 
         await db.query(
-            "INSERT INTO user_books (user_id, google_books_id, title, authors, description, thumbnail, published_date) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-            [userId, google_books_id, title, authors, description, thumbnail, published_date]
+            "INSERT INTO user_books (user_id, google_books_id, title, authors, description, thumbnail, published_date, status, rating, format) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+            [userId, google_books_id, title, authors, description, thumbnail, published_date, status, rating, format]
         );
 
         res.status(201).json({

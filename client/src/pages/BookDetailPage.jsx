@@ -63,16 +63,6 @@ export default function BookDetailPage() {
         );
     }
 
-    // const book = {
-    //     title: "The Great Gatsby",
-    //     author: "F. Scott Fitzgerald",
-    //     thumbnail: "https://covers.openlibrary.org/b/id/7825252-M.jpg",
-    //     rating: 4.5,
-    //     format: "physical",
-    //     status: "read",
-    //     description: "A novel set in the Roaring Twenties that tells the story of the mysterious millionaire Jay Gatsby and his obsession with the beautiful Daisy Buchanan."
-    // };
-
     return (
         <div className="min-h-screen flex flex-col">
             <NavBar />

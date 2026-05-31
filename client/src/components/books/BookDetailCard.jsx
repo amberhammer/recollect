@@ -2,19 +2,42 @@ import { useState } from "react";
 import LibraryBookControls from "./LibraryBookControls";
 import AddToLibraryButton from "./AddToLibraryButton";
 
+import useAuth from "../../hooks/useAuth";
+import { addBookToLibrary } from "../../api/booksApi";
+
 export default function BookDetailCard({ bookData }) {
-    console.log("BookDetailCard received bookData:", bookData);
     const [isFavorited, setIsFavorited] = useState(bookData.libraryEntry?.isFavorite || false);
     const [isInLibrary, setIsInLibrary] = useState(bookData.libraryEntry !== null);
+
+    const { token } = useAuth();
 
     const handleAddToFavorites = () => {
         setIsFavorited(!isFavorited);
         // TODO: Add API call to save to user's favorites
     };
 
-    const handleAddToLibrary = () => {
-        setIsInLibrary(true);
-        // TODO: Add API call to add book to user's library
+    const handleAddToLibrary = async () => {
+        try {
+            const payload = {
+                google_books_id: bookData.book.google_books_id,
+                title: bookData.book.title,
+                authors: bookData.book.authors,
+                description: bookData.book.description,
+                thumbnail: bookData.book.thumbnail,
+                published_date: bookData.book.published_date,
+                status: "to_read",
+                rating: null,
+                format: "physical",
+            };
+
+            const savedBook = await addBookToLibrary(payload, token);
+            console.log(savedBook);
+
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsInLibrary(true);
+        }
     };
 
     return (
@@ -24,7 +47,7 @@ export default function BookDetailCard({ bookData }) {
                 {isInLibrary ? (
                     <LibraryBookControls book={bookData.libraryEntry} isFavorited={isFavorited} onFavoriteToggle={handleAddToFavorites} />
                 ) : (
-                    <AddToLibraryButton book={bookData.book} onAdd={handleAddToLibrary} />
+                    <AddToLibraryButton onAdd={handleAddToLibrary} />
                 )}
             </div>
             <div>

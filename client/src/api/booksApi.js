@@ -20,4 +20,14 @@ const searchBooks = async (query) => {
     return response.data;
 };
 
-export { searchBooks };
+const addBookToLibrary = async (payload, token) => {
+    const response = await API.post("/", payload, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};
+
+
+export { searchBooks, addBookToLibrary };
