@@ -73,13 +73,22 @@ const getBookById = async (req, res) => {
     try {
         const userId = req.user.id;
         const { google_books_id } = req.params;
-        console.log("Fetching book with ID:", google_books_id);
-        const book = await getGoogleBookById(google_books_id);
-        if (!book) {
+
+        const response = await getGoogleBookById(google_books_id);
+        if (!response || response.error) {
             return res.status(404).json({
                 message: "Book not found in Google Books",
             });
         }
+        const data = await response;
+        const book = {
+            google_books_id: data.id,
+            title: data.volumeInfo.title || "Unknown Title",
+            authors: data.volumeInfo.authors || [],
+            description: data.volumeInfo.description || "",
+            thumbnail: data.volumeInfo.imageLinks?.thumbnail || null,
+            published_date: data.volumeInfo.publishedDate || "",
+        };
 
         const libraryResult = await db.query("SELECT * FROM user_books WHERE user_id = $1 AND google_books_id = $2", [userId, google_books_id]);
         const libraryEntry = libraryResult.rows[0] || null;

@@ -31,7 +31,7 @@ export default function BookDetailCard({ bookData }) {
                 <p className="text-xl border-t-3 border-taupe-400 px-8 py-3"><span className="font-semibold">TITLE:</span> {bookData.book.title}</p>
             </div>
             <div>
-                <p className="text-xl border-t-3 border-b-3 border-taupe-400 px-8 py-3"><span className="font-semibold">AUTHOR:</span> {bookData.book.author}</p>
+                <p className="text-xl border-t-3 border-b-3 border-taupe-400 px-8 py-3"><span className="font-semibold">AUTHOR:</span> {bookData.book.authors.join(", ") || "Unknown"}</p>
             </div>
             <div className="flex border-b-3 border-taupe-400">
                 <div className="w-2/3 px-8 py-3 border-r-3 border-taupe-400">
