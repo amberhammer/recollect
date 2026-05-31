@@ -13,7 +13,7 @@ const searchBooks = async (req, res) => {
         }
 
         const response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&key=${process.env.API_KEY}`
+            `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&key=${process.env.API_KEY}&maxResults=20`
         );
 
         const data = await response.json();

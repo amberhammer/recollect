@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import CollectionPage from "./pages/CollectionPage";
 import BookDetailPage from "./pages/BookDetailPage";
+import SearchPage from "./pages/SearchPage";
 import ProtectedRoute from './routes/ProtectedRoute';
 
 function App() {
@@ -32,15 +33,15 @@ function App() {
         </ProtectedRoute>
       } />
 
-      <Route path="/library/books" element={
-
-        <BookDetailPage />
-
-      } />
-
       <Route path="/books/:googleBooksId" element={
         <ProtectedRoute>
           <BookDetailPage />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/search" element={
+        <ProtectedRoute>
+          <SearchPage />
         </ProtectedRoute>
       } />
     </Routes>
