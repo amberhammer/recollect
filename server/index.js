@@ -23,7 +23,7 @@ db.query("SELECT NOW()")
 
 app.use('/api/library', libraryRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/books', booksRoutes);
+app.use('/api/books', booksRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
