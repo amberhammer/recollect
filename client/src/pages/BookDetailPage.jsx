@@ -11,7 +11,7 @@ export default function BookDetailPage() {
     const { google_books_id } = useParams();
     const { token } = useAuth();
 
-    const [book, setBook] = useState(null);
+    const [bookData, setBookData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -25,7 +25,7 @@ export default function BookDetailPage() {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                setBook(response.data);
+                setBookData(response.data);
             } catch (err) {
                 setError(err.response?.data || "Error fetching book details");
             } finally {
@@ -78,7 +78,7 @@ export default function BookDetailPage() {
             <NavBar />
 
             <div className="flex-grow flex justify-center p-4 pb-0">
-                <BookDetailCard book={book} />
+                <BookDetailCard book={bookData} />
             </div>
 
             <Footer />
