@@ -8,7 +8,7 @@ import Footer from "../components/layout/Footer";
 import BookDetailCard from "../components/books/BookDetailCard";
 
 export default function BookDetailPage() {
-    const { google_books_id } = useParams();
+    const { googleBooksId } = useParams();
     const { token } = useAuth();
 
     const [bookData, setBookData] = useState(null);
@@ -20,7 +20,7 @@ export default function BookDetailPage() {
             try {
                 setLoading(true);
 
-                const response = await axios.get(`/books/${google_books_id}`, {
+                const response = await axios.get(`/api/books/${googleBooksId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -33,7 +33,7 @@ export default function BookDetailPage() {
             }
         };
         fetchBookDetails();
-    }, [google_books_id, token]);
+    }, [googleBooksId, token]);
 
     if (loading) {
         return (
@@ -78,7 +78,7 @@ export default function BookDetailPage() {
             <NavBar />
 
             <div className="flex-grow flex justify-center p-4 pb-0">
-                <BookDetailCard book={bookData} />
+                <BookDetailCard bookData={bookData} />
             </div>
 
             <Footer />

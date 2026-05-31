@@ -13,7 +13,7 @@ const searchBooks = async (req, res) => {
         }
 
         const response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&key=${process.env.API_KEY}&maxResults=20`
+            `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&key=${process.env.API_KEY}&maxResults=10`
         );
 
         const data = await response.json();
@@ -73,7 +73,7 @@ const getBookById = async (req, res) => {
     try {
         const userId = req.user.id;
         const { google_books_id } = req.params;
-
+        console.log("Fetching book with ID:", google_books_id);
         const book = await getGoogleBookById(google_books_id);
         if (!book) {
             return res.status(404).json({

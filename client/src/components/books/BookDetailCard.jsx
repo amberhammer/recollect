@@ -3,6 +3,7 @@ import LibraryBookControls from "./LibraryBookControls";
 import AddToLibraryButton from "./AddToLibraryButton";
 
 export default function BookDetailCard({ bookData }) {
+    console.log("BookDetailCard received bookData:", bookData);
     const [isFavorited, setIsFavorited] = useState(bookData.libraryEntry?.isFavorite || false);
     const [isInLibrary, setIsInLibrary] = useState(bookData.libraryEntry !== null);
 
