@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
 
-import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
+import NavBar from "../components/layout/NavBar";
+import Footer from "../components/layout/Footer";
 import BookGrid from "../components/books/BookGrid";
+import { searchBooks } from "../api/booksApi";
 
 export default function SearchPage() {
     const [searchParams] = useSearchParams();
@@ -22,8 +22,8 @@ export default function SearchPage() {
             }
             try {
                 setLoading(true);
-                const response = await axios.get(`/api/books/search?q=${encodeURIComponent(query)}`);
-                setResults(response.data);
+                const results = await searchBooks(query);
+                setResults(results);
             } catch (err) {
                 setError(err.response?.data || "Failed to search book.");
             } finally {
