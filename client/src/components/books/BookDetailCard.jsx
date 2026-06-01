@@ -1,21 +1,13 @@
-import { useState } from "react";
 import LibraryBookControls from "./LibraryBookControls";
 import AddToLibraryButton from "./AddToLibraryButton";
 
 export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary }) {
-    const [isFavorited, setIsFavorited] = useState(bookData.libraryEntry?.isFavorite || false);
-
-    const handleAddToFavorites = () => {
-        setIsFavorited(!isFavorited);
-        // TODO: Add API call to save to user's favorites
-    };
-
     return (
         <div className="bg-taupe-200 rounded-4xl rounded-b-none shadow-md w-[600px] mt-6">
             <div className="flex gap-6 m-8 mb-6">
                 <img src={bookData.book.thumbnail} alt={`${bookData.book.title} cover`} className="h-52 rounded" />
                 {isInLibrary ? (
-                    <LibraryBookControls book={bookData.libraryEntry} isFavorited={isFavorited} onFavoriteToggle={handleAddToFavorites} />
+                    <LibraryBookControls book={bookData.libraryEntry} />
                 ) : (
                     <AddToLibraryButton onAdd={onAddToLibrary} />
                 )}

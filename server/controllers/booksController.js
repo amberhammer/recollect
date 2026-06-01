@@ -106,10 +106,10 @@ const updateBook = async (req, res) => {
     try {
         const userId = req.user.id;
         const { google_books_id } = req.params;
-        const { title, authors, description, thumbnail, published_date, status, rating, format } = req.body;
+        const { title, authors, description, thumbnail, published_date, status, rating, format, is_favorite } = req.body;
         await db.query(
-            "UPDATE user_books SET title = $1, authors = $2, description = $3, thumbnail = $4, published_date = $5, status = $6, rating = $7, format = $8 WHERE user_id = $9 AND google_books_id = $10",
-            [title, authors, description, thumbnail, published_date, status, rating, format, userId, google_books_id]
+            "UPDATE user_books SET title = $1, authors = $2, description = $3, thumbnail = $4, published_date = $5, status = $6, rating = $7, format = $8, is_favorite = $9 WHERE user_id = $10 AND google_books_id = $11",
+            [title, authors, description, thumbnail, published_date, status, rating, format, is_favorite, userId, google_books_id]
         );
         res.json({
             message: "Book updated successfully",

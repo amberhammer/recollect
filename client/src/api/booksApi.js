@@ -29,5 +29,13 @@ const addBookToLibrary = async (payload, token) => {
     return response.data;
 };
 
+const editLibraryEntry = async (google_books_id, payload, token) => {
+    const response = await API.put(`/${google_books_id}`, payload, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};
 
-export { searchBooks, addBookToLibrary };
+export { searchBooks, addBookToLibrary, editLibraryEntry };
