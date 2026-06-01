@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import BookCard from "./BookCard";
 
 export default function BookGrid({ displayName, books }) {
+
     return (
         <div className="flex-grow flex justify-center p-4">
             <div>
@@ -11,7 +12,7 @@ export default function BookGrid({ displayName, books }) {
                         <Link key={book.id || book.google_books_id} to={`/books/${book.google_books_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <BookCard
                                 title={book.title}
-                                author={book.authors?.[0] || "Unknown Author"}
+                                author={book.authors || "Unknown Author"}
                                 thumbnail={book.thumbnail}
                             />
                         </Link>
