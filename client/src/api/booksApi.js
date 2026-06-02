@@ -38,4 +38,13 @@ const editLibraryEntry = async (google_books_id, payload, token) => {
     return response.data;
 };
 
-export { searchBooks, addBookToLibrary, editLibraryEntry };
+const deleteLibraryEntry = async (google_books_id, token) => {
+    const response = await API.delete(`/${google_books_id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};
+
+export { searchBooks, addBookToLibrary, editLibraryEntry, deleteLibraryEntry };

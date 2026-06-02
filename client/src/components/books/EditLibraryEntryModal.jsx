@@ -2,6 +2,7 @@ import { useState } from "react";
 import { editLibraryEntry } from "../../api/booksApi";
 
 export default function EditLibraryEntryModal({ isOpen, onClose, book, onSave, onDelete }) {
+    console.log("Modal rendered", { isOpen, book, onClose, onSave, onDelete });
     const [status, setStatus] = useState(book.status);
     const [rating, setRating] = useState(book.rating);
     const [format, setFormat] = useState(book.format);
@@ -20,6 +21,7 @@ export default function EditLibraryEntryModal({ isOpen, onClose, book, onSave, o
     }
 
     if (!isOpen) return null;
+    if (!book) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">

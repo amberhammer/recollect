@@ -127,7 +127,7 @@ const deleteBook = async (req, res) => {
         const userId = req.user.id;
         const { google_books_id } = req.params;
         await db.query("DELETE FROM user_books WHERE user_id = $1 AND google_books_id = $2", [userId, google_books_id]);
-        res.json({
+        res.status(204).json({
             message: "Book deleted successfully",
         });
     } catch (err) {

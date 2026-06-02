@@ -2,12 +2,13 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
-import { addBookToLibrary } from "../api/booksApi";
+import { addBookToLibrary, deleteLibraryEntry } from "../api/booksApi";
 
 import NavBar from "../components/layout/NavBar";
 import Footer from "../components/layout/Footer";
 import BookDetailCard from "../components/books/BookDetailCard";
 import EditLibraryEntryModal from "../components/books/EditLibraryEntryModal";
+import ConfirmDeleteModal from "../components/books/ConfirmDeleteModal";
 
 export default function BookDetailPage() {
     const { googleBooksId } = useParams();
@@ -15,7 +16,7 @@ export default function BookDetailPage() {
 
     const [bookData, setBookData] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
-    // const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -40,6 +41,10 @@ export default function BookDetailPage() {
         };
         fetchBookDetails();
     }, [googleBooksId, token]);
+
+    useEffect(() => {
+        console.log("showEditModal:", showEditModal);
+    }, [showEditModal]);
 
     const handleAddToLibrary = async () => {
         try {
@@ -78,12 +83,21 @@ export default function BookDetailPage() {
         setShowEditModal(false);
     };
 
-    const handleDeleteFromLibrary = () => {
-        setBookData(prev => ({
-            ...prev,
-            libraryEntry: null,
-        }));
-        // setShowDeleteConfirm(false);
+    const handleOpenDeleteConfirm = () => {
+        setShowDeleteConfirm(true);
+    };
+
+    const handleDeleteFromLibrary = async () => {
+        try {
+            await deleteLibraryEntry(bookData.libraryEntry.google_books_id, token);
+            setBookData(prev => ({
+                ...prev,
+                libraryEntry: null,
+            }));
+            setShowDeleteConfirm(false);
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     if (loading) {
@@ -125,16 +139,23 @@ export default function BookDetailPage() {
                     isInLibrary={isInLibrary}
                     onEdit={() => setShowEditModal(true)}
                     onDelete={() => setShowDeleteConfirm(true)} />
-                <EditLibraryEntryModal
-                    isOpen={showEditModal}
-                    onClose={() => setShowEditModal(false)}
-                    book={bookData.libraryEntry}
-                    onSave={handleLibraryEntryUpdate}
-                    onDelete={handleDeleteFromLibrary}
+                {showEditModal && bookData?.libraryEntry && (
+                    <EditLibraryEntryModal
+                        book={bookData.libraryEntry}
+                        onClose={() => setShowEditModal(false)}
+                        onSave={handleLibraryEntryUpdate}
+                        onDelete={handleOpenDeleteConfirm}
+                        isOpen={() => setShowEditModal(true)}
+                    />
+                )}
+                <ConfirmDeleteModal
+                    isOpen={showDeleteConfirm}
+                    onClose={() => setShowDeleteConfirm(false)}
+                    onConfirm={handleDeleteFromLibrary}
                 />
             </div>
 
             <Footer />
         </div>
-    )
+    );
 }
