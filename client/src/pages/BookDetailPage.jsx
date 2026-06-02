@@ -7,12 +7,15 @@ import { addBookToLibrary } from "../api/booksApi";
 import NavBar from "../components/layout/NavBar";
 import Footer from "../components/layout/Footer";
 import BookDetailCard from "../components/books/BookDetailCard";
+import EditLibraryEntryModal from "../components/books/EditLibraryEntryModal";
 
 export default function BookDetailPage() {
     const { googleBooksId } = useParams();
     const { token } = useAuth();
 
     const [bookData, setBookData] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(false);
+    // const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -64,6 +67,25 @@ export default function BookDetailPage() {
         }
     };
 
+    const handleLibraryEntryUpdate = (updatedEntry) => {
+        setBookData(prev => ({
+            ...prev,
+            libraryEntry: {
+                ...prev.libraryEntry,
+                ...updatedEntry,
+            },
+        }));
+        setShowEditModal(false);
+    };
+
+    const handleDeleteFromLibrary = () => {
+        setBookData(prev => ({
+            ...prev,
+            libraryEntry: null,
+        }));
+        // setShowDeleteConfirm(false);
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen flex flex-col">
@@ -97,7 +119,19 @@ export default function BookDetailPage() {
             <NavBar />
 
             <div className="flex-grow flex justify-center p-4 pb-0">
-                <BookDetailCard bookData={bookData} onAddToLibrary={handleAddToLibrary} isInLibrary={isInLibrary} />
+                <BookDetailCard
+                    bookData={bookData}
+                    onAddToLibrary={handleAddToLibrary}
+                    isInLibrary={isInLibrary}
+                    onEdit={() => setShowEditModal(true)}
+                    onDelete={() => setShowDeleteConfirm(true)} />
+                <EditLibraryEntryModal
+                    isOpen={showEditModal}
+                    onClose={() => setShowEditModal(false)}
+                    book={bookData.libraryEntry}
+                    onSave={handleLibraryEntryUpdate}
+                    onDelete={handleDeleteFromLibrary}
+                />
             </div>
 
             <Footer />
