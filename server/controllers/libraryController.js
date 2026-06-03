@@ -35,7 +35,7 @@ const getCollectionBooks = async (req, res) => {
 
     if (collection === "currently-reading") {
       const books = await db.query(
-        "SELECT * FROM user_books WHERE user_id = $1 AND status = 'currently-reading'",
+        "SELECT * FROM user_books WHERE user_id = $1 AND status = 'currently_reading'",
         [userId]
       );
       return res.json(books.rows);
@@ -43,7 +43,7 @@ const getCollectionBooks = async (req, res) => {
 
     if (collection === "to-read") {
       const books = await db.query(
-        "SELECT * FROM user_books WHERE user_id = $1 AND status = 'to-read'",
+        "SELECT * FROM user_books WHERE user_id = $1 AND status = 'to_read'",
         [userId]
       );
       return res.json(books.rows);
