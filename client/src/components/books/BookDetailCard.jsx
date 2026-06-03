@@ -1,13 +1,13 @@
 import LibraryBookControls from "./LibraryBookControls";
 import AddToLibraryButton from "./AddToLibraryButton";
 
-export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, onEdit, onDelete }) {
+export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, onEdit, onDelete, onFavoriteUpdate }) {
     return (
         <div className="bg-taupe-200 rounded-4xl rounded-b-none shadow-md w-[600px] mt-6">
             <div className="flex gap-6 m-8 mb-6">
                 <img src={bookData.book.thumbnail} alt={`${bookData.book.title} cover`} className="h-52 rounded" />
                 {isInLibrary ? (
-                    <LibraryBookControls book={bookData.libraryEntry} onEdit={onEdit} onDelete={onDelete} />
+                    <LibraryBookControls book={bookData.libraryEntry} onEdit={onEdit} onDelete={onDelete} onFavoriteUpdate={onFavoriteUpdate} />
                 ) : (
                     <AddToLibraryButton onAdd={onAddToLibrary} />
                 )}

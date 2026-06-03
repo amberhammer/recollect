@@ -16,7 +16,8 @@ export default function EditLibraryEntryModal({ isOpen, onClose, book, onSave, o
             format: format,
             is_favorite: isFavorite,
         };
-        const updatedEntry = await editLibraryEntry(book.google_books_id, payload);
+        await editLibraryEntry(book.google_books_id, payload);
+        const updatedEntry = payload;
         onSave(updatedEntry);
     }
 

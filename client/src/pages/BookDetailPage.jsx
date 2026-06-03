@@ -100,6 +100,16 @@ export default function BookDetailPage() {
         }
     };
 
+    const handleFavoriteUpdate = (isFavorite) => {
+        setBookData(prev => ({
+            ...prev,
+            libraryEntry: {
+                ...prev.libraryEntry,
+                is_favorite: isFavorite,
+            },
+        }));
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen flex flex-col">
@@ -138,14 +148,16 @@ export default function BookDetailPage() {
                     onAddToLibrary={handleAddToLibrary}
                     isInLibrary={isInLibrary}
                     onEdit={() => setShowEditModal(true)}
-                    onDelete={() => setShowDeleteConfirm(true)} />
+                    onDelete={() => setShowDeleteConfirm(true)}
+                    onFavoriteUpdate={handleFavoriteUpdate}
+                />
                 {showEditModal && bookData?.libraryEntry && (
                     <EditLibraryEntryModal
                         book={bookData.libraryEntry}
                         onClose={() => setShowEditModal(false)}
                         onSave={handleLibraryEntryUpdate}
                         onDelete={handleOpenDeleteConfirm}
-                        isOpen={() => setShowEditModal(true)}
+                        isOpen={showEditModal}
                     />
                 )}
                 <ConfirmDeleteModal

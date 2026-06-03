@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { editLibraryEntry } from "../../api/booksApi";
 
-export default function LibraryBookControls({ book, onEdit }) {
+export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate }) {
     const [isFavorited, setIsFavorited] = useState(book?.is_favorite || false);
 
     const handleFavoriteToggle = async () => {
@@ -19,6 +19,7 @@ export default function LibraryBookControls({ book, onEdit }) {
                 is_favorite: !isFavorited,
             }
             await editLibraryEntry(book.google_books_id, payload);
+            onFavoriteUpdate(!isFavorited);
         } catch (err) {
             console.error("Error updating favorite status:", err);
             setIsFavorited(isFavorited);
