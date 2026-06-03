@@ -37,7 +37,7 @@ export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate }) 
                 </div>
                 <p className="text-xl mb-2"><span className="font-semibold">STATUS:</span> {book.status?.toUpperCase()}</p>
                 <p className="text-xl mb-3"><span className="font-semibold">FORMAT:</span> {book.format?.toUpperCase()}</p>
-                <button className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded">Borrow</button>
+                <button className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded">Lend</button>
             </div>
             <div>
                 <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded" onClick={() => {
