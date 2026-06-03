@@ -23,7 +23,7 @@ export default function HomePage() {
                             <Cabinet collectionName="Currently Reading" />
                         </Link>
                         <Link to="/library/to-read" style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <Cabinet collectionName="To Be Read" />
+                            <Cabinet collectionName="To Read" />
                         </Link>
                         <Link to="/library/borrowed" style={{ textDecoration: 'none', color: 'inherit' }}>
                             <Cabinet collectionName="Borrowed" />
