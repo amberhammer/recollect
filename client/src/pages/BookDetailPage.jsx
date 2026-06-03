@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { addBookToLibrary, deleteLibraryEntry } from "../api/booksApi";
 
 import NavBar from "../components/layout/NavBar";
+import BackButton from "../components/layout/BackButton";
 import Footer from "../components/layout/Footer";
 import BookDetailCard from "../components/books/BookDetailCard";
 import EditLibraryEntryModal from "../components/books/EditLibraryEntryModal";
@@ -12,6 +13,7 @@ import ConfirmDeleteModal from "../components/books/ConfirmDeleteModal";
 
 export default function BookDetailPage() {
     const { googleBooksId } = useParams();
+    const location = useLocation();
     const { token } = useAuth();
 
     const [bookData, setBookData] = useState(null);
@@ -21,6 +23,7 @@ export default function BookDetailPage() {
     const [error, setError] = useState(null);
 
     const isInLibrary = !!bookData?.libraryEntry;
+    const backTo = location.state?.from || "/library";
 
     useEffect(() => {
         const fetchBookDetails = async () => {
@@ -143,14 +146,19 @@ export default function BookDetailPage() {
             <NavBar />
 
             <div className="flex-grow flex justify-center p-4 pb-0">
-                <BookDetailCard
-                    bookData={bookData}
-                    onAddToLibrary={handleAddToLibrary}
-                    isInLibrary={isInLibrary}
-                    onEdit={() => setShowEditModal(true)}
-                    onDelete={() => setShowDeleteConfirm(true)}
-                    onFavoriteUpdate={handleFavoriteUpdate}
-                />
+                <div>
+                    <div className="w-[600px] mt-6 mb-2">
+                        <BackButton to={backTo} />
+                    </div>
+                    <BookDetailCard
+                        bookData={bookData}
+                        onAddToLibrary={handleAddToLibrary}
+                        isInLibrary={isInLibrary}
+                        onEdit={() => setShowEditModal(true)}
+                        onDelete={() => setShowDeleteConfirm(true)}
+                        onFavoriteUpdate={handleFavoriteUpdate}
+                    />
+                </div>
                 {showEditModal && bookData?.libraryEntry && (
                     <EditLibraryEntryModal
                         book={bookData.libraryEntry}

@@ -5,6 +5,7 @@ import useAuth from "../hooks/useAuth";
 
 import Footer from "../components/layout/Footer";
 import NavBar from "../components/layout/NavBar";
+import BackButton from "../components/layout/BackButton";
 import BookGrid from "../components/books/BookGrid";
 
 export default function CollectionPage() {
@@ -118,8 +119,15 @@ export default function CollectionPage() {
       <div className="min-h-screen flex flex-col">
         <NavBar />
 
-        <div className="flex-grow flex justify-center items-center">
-          <p>No books found in this collection.</p>
+        <div className="flex-grow flex justify-center p-4">
+          <div className="w-[700px]">
+            <div className="grid grid-cols-[96px_1fr_96px] items-center mb-6">
+              <BackButton to="/" />
+              <h2 className="text-2xl font-bold text-center">{displayName}</h2>
+              <div aria-hidden="true" />
+            </div>
+            <p className="text-center">No books found in this collection.</p>
+          </div>
         </div>
 
         <Footer />
@@ -131,7 +139,7 @@ export default function CollectionPage() {
     <div className="min-h-screen flex flex-col">
       <NavBar />
 
-      <BookGrid displayName={displayName} books={books} />
+      <BookGrid displayName={displayName} books={books} backTo="/" />
 
       <Footer />
     </div>

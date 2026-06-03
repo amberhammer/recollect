@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function SearchBar() {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [searchType, setSearchType] = useState("books");
     const [query, setQuery] = useState("");
@@ -10,7 +11,14 @@ export default function SearchBar() {
     const handleSearch = (e) => {
         e.preventDefault();
         if (query.trim()) {
-            navigate(`/search?q=${encodeURIComponent(query)}`);
+            navigate(`/search?q=${encodeURIComponent(query)}`, {
+                state: {
+                    from: {
+                        pathname: location.pathname,
+                        search: location.search,
+                    },
+                },
+            });
         }
     };
 

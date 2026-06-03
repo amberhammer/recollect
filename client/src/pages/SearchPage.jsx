@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import NavBar from "../components/layout/NavBar";
@@ -8,7 +8,9 @@ import { searchBooks } from "../api/booksApi";
 
 export default function SearchPage() {
     const [searchParams] = useSearchParams();
+    const location = useLocation();
     const query = searchParams.get("q") || "";
+    const backTo = location.state?.from || "/";
 
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -65,7 +67,7 @@ export default function SearchPage() {
         <div className="min-h-screen flex flex-col">
             <NavBar />
 
-            <BookGrid books={results} displayName={`Search results for "${query}"`} />
+            <BookGrid books={results} displayName={`Search results for "${query}"`} backTo={backTo} />
 
             <Footer />
         </div>
