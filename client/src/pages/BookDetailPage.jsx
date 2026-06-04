@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { addBookToLibrary, deleteLibraryEntry } from "../api/booksApi";
+import { getContacts } from "../api/contactsApi";
 
 import NavBar from "../components/layout/NavBar";
 import BackButton from "../components/layout/BackButton";
@@ -10,6 +11,7 @@ import Footer from "../components/layout/Footer";
 import BookDetailCard from "../components/books/BookDetailCard";
 import EditLibraryEntryModal from "../components/books/EditLibraryEntryModal";
 import ConfirmDeleteModal from "../components/books/ConfirmDeleteModal";
+import LendModal from "../components/books/LendModal";
 
 export default function BookDetailPage() {
     const { googleBooksId } = useParams();
@@ -19,6 +21,10 @@ export default function BookDetailPage() {
     const [bookData, setBookData] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [showLendModal, setShowLendModal] = useState(false);
+    const [contacts, setContacts] = useState([]);
+    const [contactsLoading, setContactsLoading] = useState(false);
+    const [contactsError, setContactsError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -46,8 +52,24 @@ export default function BookDetailPage() {
     }, [googleBooksId, token]);
 
     useEffect(() => {
-        console.log("showEditModal:", showEditModal);
-    }, [showEditModal]);
+        if (!showLendModal) return;
+
+        const fetchContacts = async () => {
+            try {
+                setContactsLoading(true);
+                setContactsError(null);
+                const contacts = await getContacts();
+                setContacts(contacts);
+            } catch (err) {
+                console.error(err);
+                setContactsError("Failed to load contacts.");
+            } finally {
+                setContactsLoading(false);
+            }
+        };
+
+        fetchContacts();
+    }, [showLendModal]);
 
     const handleAddToLibrary = async () => {
         try {
@@ -155,6 +177,7 @@ export default function BookDetailPage() {
                         onAddToLibrary={handleAddToLibrary}
                         isInLibrary={isInLibrary}
                         onEdit={() => setShowEditModal(true)}
+                        onLend={() => setShowLendModal(true)}
                         onDelete={() => setShowDeleteConfirm(true)}
                         onFavoriteUpdate={handleFavoriteUpdate}
                     />
@@ -173,6 +196,17 @@ export default function BookDetailPage() {
                     onClose={() => setShowDeleteConfirm(false)}
                     onConfirm={handleDeleteFromLibrary}
                 />
+                {showLendModal && bookData?.libraryEntry && (
+                    <LendModal
+                        book={bookData.libraryEntry}
+                        contacts={contacts}
+                        contactsLoading={contactsLoading}
+                        contactsError={contactsError}
+                        isOpen={showLendModal}
+                        onClose={() => setShowLendModal(false)}
+                    // onSave={handleCreateLoan}
+                    />
+                )}
             </div>
 
             <Footer />

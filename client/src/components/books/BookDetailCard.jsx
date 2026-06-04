@@ -2,7 +2,7 @@ import LibraryBookControls from "./LibraryBookControls";
 import AddToLibraryButton from "./AddToLibraryButton";
 import ReturnButton from "./ReturnButton";
 
-export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, onEdit, onDelete, onFavoriteUpdate }) {
+export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, onEdit, onDelete, onLend, onFavoriteUpdate }) {
     const currentLoan = bookData.currentLoan;
     const loanHistoryRows = (bookData.loanHistory || [])
         .filter((loan) => loan.id !== currentLoan?.id)
@@ -16,7 +16,7 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
             <div className="flex gap-6 m-8 mb-6 pt-8">
                 <img src={bookData.book.thumbnail} alt={`${bookData.book.title} cover`} className="h-52 rounded" />
                 {isInLibrary ? (
-                    <LibraryBookControls book={bookData.libraryEntry} onEdit={onEdit} onDelete={onDelete} onFavoriteUpdate={onFavoriteUpdate} />
+                    <LibraryBookControls book={bookData.libraryEntry} onEdit={onEdit} onDelete={onDelete} onLend={onLend} onFavoriteUpdate={onFavoriteUpdate} />
                 ) : (
                     <AddToLibraryButton onAdd={onAddToLibrary} />
                 )}

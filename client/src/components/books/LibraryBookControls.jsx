@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { editLibraryEntry } from "../../api/booksApi";
 
-export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate }) {
+export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate, onLend }) {
     const [isFavorited, setIsFavorited] = useState(book?.is_favorite || false);
 
     const handleFavoriteToggle = async () => {
@@ -37,7 +37,7 @@ export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate }) 
                 </div>
                 <p className="text-xl mb-2"><span className="font-semibold">STATUS:</span> {book.status?.toUpperCase()}</p>
                 <p className="text-xl mb-3"><span className="font-semibold">FORMAT:</span> {book.format?.toUpperCase()}</p>
-                <button className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded w-20">Lend</button>
+                <button onClick={onLend} className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded w-20">Lend</button>
             </div>
             <div>
                 <button className="bg-taupe-400 hover:bg-taupe-500 text-black font-bold py-2 px-4 rounded" onClick={() => {

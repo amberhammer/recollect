@@ -1,3 +1,5 @@
+const db = require("../db");
+
 const getContacts = async (req, res) => {
     try {
         const userId = req.user.id;
