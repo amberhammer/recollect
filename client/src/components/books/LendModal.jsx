@@ -3,6 +3,7 @@ import { useState } from "react";
 export default function LendModal({ book, contacts = [], contactsLoading = false, contactsError = null, onClose, onSave, isOpen }) {
     const [selectedContactId, setSelectedContactId] = useState("");
     const [newContactName, setNewContactName] = useState("");
+    const [loanedDate, setLoanedDate] = useState(new Date().toISOString().slice(0, 10));
 
     if (!isOpen) return null;
     if (!book) return null;
@@ -12,9 +13,11 @@ export default function LendModal({ book, contacts = [], contactsLoading = false
             user_book_id: book.id,
             contact_id: selectedContactId || null,
             contact_name: newContactName.trim() || null,
-            loaned_date: new Date().toISOString().slice(0, 10),
+            loaned_date: loanedDate,
         });
     };
+
+    const hasBorrower = selectedContactId || newContactName.trim();
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -28,7 +31,10 @@ export default function LendModal({ book, contacts = [], contactsLoading = false
                         <label className="block text-sm font-medium text-gray-700">Borrower:</label>
                         <select
                             value={selectedContactId}
-                            onChange={(e) => setSelectedContactId(e.target.value)}
+                            onChange={(e) => {
+                                setSelectedContactId(e.target.value);
+                                setNewContactName("");
+                            }}
                             disabled={contactsLoading}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         >
@@ -48,13 +54,30 @@ export default function LendModal({ book, contacts = [], contactsLoading = false
                             type="text"
                             placeholder="Enter name"
                             value={newContactName}
-                            onChange={(e) => setNewContactName(e.target.value)}
+                            onChange={(e) => {
+                                setNewContactName(e.target.value);
+                                setSelectedContactId("");
+                            }}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Loaned Date</label>
+                        <input
+                            type="date"
+                            value={loanedDate}
+                            onChange={(e) => setLoanedDate(e.target.value)}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         />
                     </div>
                 </div>
                 <div className="flex items-center justify-end mt-6">
-                    <button onClick={handleSubmit} className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold h-10 py-2 px-4 rounded mr-2">
+                    <button
+                        onClick={handleSubmit}
+                        disabled={!hasBorrower || !loanedDate}
+                        className="bg-emerald-900 hover:bg-emerald-950 disabled:bg-gray-400 text-white font-bold h-10 py-2 px-4 rounded mr-2"
+                    >
                         Save
                     </button>
                     <button onClick={onClose} className="bg-gray-500 hover:bg-gray-600 text-white font-bold h-10 py-2 px-4 rounded">

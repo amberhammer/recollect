@@ -4,6 +4,7 @@ import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { addBookToLibrary, deleteLibraryEntry } from "../api/booksApi";
 import { getContacts } from "../api/contactsApi";
+import { createLoan } from "../api/loansApi";
 
 import NavBar from "../components/layout/NavBar";
 import BackButton from "../components/layout/BackButton";
@@ -135,7 +136,19 @@ export default function BookDetailPage() {
         }));
     };
 
-    // const handleCreateLoan = async (contactId) => {
+    const handleCreateLoan = async (payload) => {
+        try {
+            const createdLoan = await createLoan(payload, token);
+            setBookData(prev => ({
+                ...prev,
+                currentLoan: createdLoan,
+                loanHistory: [createdLoan, ...(prev.loanHistory || [])],
+            }));
+            setShowLendModal(false);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     if (loading) {
         return (
@@ -206,7 +219,7 @@ export default function BookDetailPage() {
                         contactsError={contactsError}
                         isOpen={showLendModal}
                         onClose={() => setShowLendModal(false)}
-                    // onSave={handleCreateLoan}
+                        onSave={handleCreateLoan}
                     />
                 )}
             </div>
