@@ -27,8 +27,8 @@ export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate }) 
     };
 
     return (
-        <div className="flex flex-row">
-            <div className="flex flex-col">
+        <div className="flex flex-row justify-end">
+            <div className="flex flex-col w-80">
                 <div className="flex items-center gap-4 mb-2">
                     <p className="text-xl font-semibold">★  {book.rating} / 5</p>
                     <button onClick={handleFavoriteToggle} className="text-3xl text-red-500 hover:scale-110 transition-transform">
@@ -37,10 +37,10 @@ export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate }) 
                 </div>
                 <p className="text-xl mb-2"><span className="font-semibold">STATUS:</span> {book.status?.toUpperCase()}</p>
                 <p className="text-xl mb-3"><span className="font-semibold">FORMAT:</span> {book.format?.toUpperCase()}</p>
-                <button className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded">Lend</button>
+                <button className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded w-20">Lend</button>
             </div>
             <div>
-                <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded" onClick={() => {
+                <button className="bg-taupe-400 hover:bg-taupe-500 text-white font-bold py-2 px-4 rounded" onClick={() => {
                     console.log("Edit clicked");
                     onEdit();
                 }}>...</button>
