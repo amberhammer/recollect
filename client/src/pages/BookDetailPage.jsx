@@ -4,7 +4,7 @@ import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { addBookToLibrary, deleteLibraryEntry } from "../api/booksApi";
 import { getContacts } from "../api/contactsApi";
-import { createLoan } from "../api/loansApi";
+import { createLoan, returnLoan } from "../api/loansApi";
 
 import NavBar from "../components/layout/NavBar";
 import BackButton from "../components/layout/BackButton";
@@ -150,6 +150,22 @@ export default function BookDetailPage() {
         }
     };
 
+    const handleReturnLoan = async () => {
+        const loanId = bookData.currentLoan?.id;
+        if (!loanId) return;
+
+        try {
+            const updatedLoan = await returnLoan(loanId, token);
+            setBookData(prev => ({
+                ...prev,
+                currentLoan: null,
+                loanHistory: prev.loanHistory?.map(loan => (loan.id === loanId ? updatedLoan : loan)) || [],
+            }));
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen flex flex-col">
@@ -194,6 +210,7 @@ export default function BookDetailPage() {
                         onEdit={() => setShowEditModal(true)}
                         onLend={() => setShowLendModal(true)}
                         onDelete={() => setShowDeleteConfirm(true)}
+                        onReturnLoan={handleReturnLoan}
                         onFavoriteUpdate={handleFavoriteUpdate}
                     />
                 </div>

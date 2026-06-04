@@ -47,10 +47,16 @@ const returnLoan = async (req, res) => {
         const { loanId } = req.params;
 
         const loan = await db.query(
-            "UPDATE loans SET returned_date = CURRENT_Date WHERE id = $1 RETURNING *",
+            "UPDATE loans SET returned_date = CURRENT_DATE WHERE id = $1 RETURNING *",
             [loanId]
         );
-        res.json(loan.rows[0]);
+
+        const updatedLoan = await db.query(
+            "SELECT l.*, c.name AS contact_name FROM loans l JOIN contacts c ON l.contact_id = c.id WHERE l.id = $1",
+            [loan.rows[0].id]
+        );
+
+        res.json(updatedLoan.rows[0]);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Failed to return loan" });

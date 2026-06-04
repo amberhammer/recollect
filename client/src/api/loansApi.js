@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://localhost:3000/api/loans/",
+    baseURL: "http://localhost:3000/api/loans",
     headers: {
         "Content-Type": "application/json",
     },
@@ -25,7 +25,7 @@ const createLoan = async (payload, token) => {
 };
 
 const returnLoan = async (loanId, token) => {
-    const response = await API.patch(`/${loanId}/return`, null, {
+    const response = await API.patch(`/${loanId}/return`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

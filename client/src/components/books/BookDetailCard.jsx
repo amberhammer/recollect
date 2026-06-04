@@ -2,7 +2,7 @@ import LibraryBookControls from "./LibraryBookControls";
 import AddToLibraryButton from "./AddToLibraryButton";
 import ReturnButton from "./ReturnButton";
 
-export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, onEdit, onDelete, onLend, onFavoriteUpdate }) {
+export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, onEdit, onDelete, onLend, onFavoriteUpdate, onReturnLoan }) {
     const currentLoan = bookData.currentLoan;
     const loanHistoryRows = (bookData.loanHistory || [])
         .filter((loan) => loan.id !== currentLoan?.id)
@@ -47,7 +47,7 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
                     <p className="text-lg">{getLoanDate(currentLoan, "loaned_date")}</p>
                 </div>
                 <div className="w-1/4 px-6 py-3">
-                    {currentLoan ? <ReturnButton /> : <p className="text-lg">—</p>}
+                    {currentLoan ? <ReturnButton onReturn={onReturnLoan} /> : <p className="text-lg">—</p>}
                 </div>
             </div>
             <div>
