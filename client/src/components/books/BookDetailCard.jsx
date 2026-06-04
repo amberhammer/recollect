@@ -9,7 +9,8 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
         .sort((a, b) => new Date(b.loaned_date) - new Date(a.loaned_date));
 
     const getContactName = (loan) => loan?.contact_name || loan?.name || "—";
-    const getLoanDate = (loan, dateKey) => loan?.[dateKey] || "—";
+    const formatDate = (date) => date ? String(date).slice(0, 10) : "—";
+    const getLoanDate = (loan, dateKey) => formatDate(loan?.[dateKey]);
 
     return (
         <div className="bg-taupe-200 rounded-4xl rounded-b-none shadow-md w-[600px] mt-6">
@@ -49,7 +50,7 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
                     {currentLoan ? <ReturnButton /> : <p className="text-lg">—</p>}
                 </div>
             </div>
-            <div className="flex">
+            <div>
                 {loanHistoryRows.map((loan) => (
                     <div key={loan.id} className="flex border-t-3 border-taupe-400">
                         <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
@@ -65,12 +66,9 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
                 ))}
             </div>
             <div className="min-h-100 flex">
-                <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
-                </div>
-                <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
-                </div>
-                <div className="w-1/4 px-6 py-3">
-                </div>
+                <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400" />
+                <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400" />
+                <div className="w-1/4 px-6 py-3" />
             </div>
         </div>
     );
