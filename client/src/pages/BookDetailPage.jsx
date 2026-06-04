@@ -135,6 +135,8 @@ export default function BookDetailPage() {
         }));
     };
 
+    // const handleCreateLoan = async (contactId) => {
+
     if (loading) {
         return (
             <div className="min-h-screen flex flex-col">
