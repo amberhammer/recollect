@@ -1,5 +1,6 @@
 import LibraryBookControls from "./LibraryBookControls";
 import AddToLibraryButton from "./AddToLibraryButton";
+import ReturnButton from "./ReturnButton";
 
 export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, onEdit, onDelete, onFavoriteUpdate }) {
     return (
@@ -37,7 +38,7 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
                     <p className="text-lg">{bookData.libraryEntry?.borrowDate || "—"}</p>
                 </div>
                 <div className="w-1/4 px-6 py-3">
-                    <p className="text-lg">{bookData.libraryEntry?.returnDate || "—"}</p>
+                    <p className="text-lg">{bookData.libraryEntry?.returnDate || <ReturnButton />}</p>
                 </div>
             </div>
             <div className="flex h-100">

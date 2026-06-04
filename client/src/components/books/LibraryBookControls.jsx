@@ -40,7 +40,7 @@ export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate }) 
                 <button className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded w-20">Lend</button>
             </div>
             <div>
-                <button className="bg-taupe-400 hover:bg-taupe-500 text-white font-bold py-2 px-4 rounded" onClick={() => {
+                <button className="bg-taupe-400 hover:bg-taupe-500 text-black font-bold py-2 px-4 rounded" onClick={() => {
                     console.log("Edit clicked");
                     onEdit();
                 }}>...</button>
