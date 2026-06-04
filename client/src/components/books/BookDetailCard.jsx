@@ -19,25 +19,33 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
                 <p className="text-xl border-t-3 border-b-3 border-taupe-400 px-8 py-3"><span className="font-semibold">AUTHOR:</span> {bookData.book.authors.join(", ") || "Unknown"}</p>
             </div>
             <div className="flex border-b-3 border-taupe-400">
-                <div className="w-2/3 px-8 py-3 border-r-3 border-taupe-400">
+                <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
                     <p className="text-xl font-semibold">BORROWER:</p>
                 </div>
-                <div className="w-1/3 px-8 py-3">
-                    <p className="text-xl font-semibold">DATE:</p>
+                <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
+                    <p className="text-xl font-semibold">LOANED:</p>
+                </div>
+                <div className="w-1/4 px-6 py-3">
+                    <p className="text-xl font-semibold">RETURNED:</p>
                 </div>
             </div>
             <div className="flex">
-                <div className="w-2/3 px-8 py-3 border-r-3 border-taupe-400">
+                <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
                     <p className="text-lg">{bookData.libraryEntry?.borrower || "—"}</p>
                 </div>
-                <div className="w-1/3 px-8 py-3">
+                <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
                     <p className="text-lg">{bookData.libraryEntry?.borrowDate || "—"}</p>
+                </div>
+                <div className="w-1/4 px-6 py-3">
+                    <p className="text-lg">{bookData.libraryEntry?.returnDate || "—"}</p>
                 </div>
             </div>
             <div className="flex h-100">
-                <div className="w-2/3 px-8 py-3 border-r-3 border-taupe-400">
+                <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
                 </div>
-                <div className="w-1/3 px-8 py-3">
+                <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
+                </div>
+                <div className="w-1/4 px-6 py-3">
                 </div>
             </div>
         </div>
