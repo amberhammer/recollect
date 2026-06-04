@@ -8,6 +8,8 @@ const db = require('./db');
 const libraryRoutes = require('./routes/libraryRoutes');
 const authRoutes = require('./routes/authRoutes');
 const booksRoutes = require('./routes/booksRoutes');
+const loansRoutes = require('./routes/loansRoutes');
+const contactsRoutes = require('./routes/contactsRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -16,14 +18,11 @@ db.query("SELECT NOW()")
   .then(() => console.log("Database connected"))
   .catch(err => console.error("DB connection failed", err));
 
-// app.get("/test-db", async (req, res) => {
-//   const result = await require("./db").query("SELECT NOW()");
-//   res.json(result.rows);
-// });
-
 app.use('/api/library', libraryRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/books', booksRoutes);
+app.use('/api/loans', loansRoutes);
+app.use('/api/contacts', contactsRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
