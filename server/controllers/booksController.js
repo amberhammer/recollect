@@ -93,7 +93,16 @@ const getBookById = async (req, res) => {
         const libraryResult = await db.query("SELECT * FROM user_books WHERE user_id = $1 AND google_books_id = $2", [userId, google_books_id]);
         const libraryEntry = libraryResult.rows[0] || null;
 
-        res.json({ book, libraryEntry });
+        let loanHistory = [];
+        let currentLoan = null;
+
+        if (libraryEntry) {
+            const loanResult = await db.query("SELECT l.*, c.name AS contact_name FROM loans l JOIN contacts c ON l.contact_id = c.id WHERE l.user_book_id = $1 ORDER BY l.loaned_date DESC", [libraryEntry.id]);
+            loanHistory = loanResult.rows;
+            currentLoan = loanHistory.find(loan => !loan.returned_date) || null;
+        }
+
+        res.json({ book, libraryEntry, currentLoan, loanHistory });
     } catch (err) {
         console.error(err);
         res.status(500).json({

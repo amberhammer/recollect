@@ -1,4 +1,4 @@
-export const createLoan = async (req, res) => {
+const createLoan = async (req, res) => {
     try {
         const userId = req.user.id;
         const { user_book_id, contact_id, contact_name, loaned_date } = req.body;
@@ -30,7 +30,7 @@ export const createLoan = async (req, res) => {
     }
 };
 
-export const returnLoan = async (req, res) => {
+const returnLoan = async (req, res) => {
     try {
         const { loanId } = req.params;
 
@@ -45,7 +45,7 @@ export const returnLoan = async (req, res) => {
     }
 };
 
-export const getLoanHistory = async (req, res) => {
+const getLoanHistory = async (req, res) => {
     try {
         const { userBookId } = req.params;
         const loans = await db.query(
@@ -58,3 +58,5 @@ export const getLoanHistory = async (req, res) => {
         res.status(500).json({ error: "Failed to fetch loan history" });
     }
 };
+
+module.exports = { createLoan, returnLoan, getLoanHistory };
