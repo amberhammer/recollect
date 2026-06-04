@@ -3,6 +3,14 @@ import AddToLibraryButton from "./AddToLibraryButton";
 import ReturnButton from "./ReturnButton";
 
 export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, onEdit, onDelete, onFavoriteUpdate }) {
+    const currentLoan = bookData.currentLoan;
+    const loanHistoryRows = (bookData.loanHistory || [])
+        .filter((loan) => loan.id !== currentLoan?.id)
+        .sort((a, b) => new Date(b.loaned_date) - new Date(a.loaned_date));
+
+    const getContactName = (loan) => loan?.contact_name || loan?.name || "—";
+    const getLoanDate = (loan, dateKey) => loan?.[dateKey] || "—";
+
     return (
         <div className="bg-taupe-200 rounded-4xl rounded-b-none shadow-md w-[600px] mt-6">
             <div className="flex gap-6 m-8 mb-6 pt-8">
@@ -32,16 +40,31 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
             </div>
             <div className="flex">
                 <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
-                    <p className="text-lg">{bookData.libraryEntry?.borrower || "—"}</p>
+                    <p className="text-lg">{getContactName(currentLoan)}</p>
                 </div>
                 <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
-                    <p className="text-lg">{bookData.libraryEntry?.borrowDate || "—"}</p>
+                    <p className="text-lg">{getLoanDate(currentLoan, "loaned_date")}</p>
                 </div>
                 <div className="w-1/4 px-6 py-3">
-                    <p className="text-lg">{bookData.libraryEntry?.returnDate || <ReturnButton />}</p>
+                    {currentLoan ? <ReturnButton /> : <p className="text-lg">—</p>}
                 </div>
             </div>
-            <div className="flex h-100">
+            <div className="flex">
+                {loanHistoryRows.map((loan) => (
+                    <div key={loan.id} className="flex border-t-3 border-taupe-400">
+                        <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
+                            <p className="text-lg">{getContactName(loan)}</p>
+                        </div>
+                        <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
+                            <p className="text-lg">{getLoanDate(loan, "loaned_date")}</p>
+                        </div>
+                        <div className="w-1/4 px-6 py-3">
+                            <p className="text-lg">{getLoanDate(loan, "returned_date")}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="min-h-100 flex">
                 <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
                 </div>
                 <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
@@ -50,5 +73,5 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
                 </div>
             </div>
         </div>
-    )
+    );
 }
