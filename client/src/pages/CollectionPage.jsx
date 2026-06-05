@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import { createBorrowedBook } from "../api/borrowedBooksApi";
 
 import Footer from "../components/layout/Footer";
 import NavBar from "../components/layout/NavBar";
@@ -60,6 +61,28 @@ export default function CollectionPage() {
       Add Borrowed Book
     </button>
   ) : null;
+
+  const handleCreateBorrowedBook = async ({ book, contact_id, contact_name, borrowed_date }) => {
+    try {
+      const payload = {
+        google_books_id: book.google_books_id,
+        title: book.title,
+        author: Array.isArray(book.authors) ? book.authors.join(", ") : book.authors,
+        thumbnail: book.thumbnail,
+        published_date: book.published_date,
+        rating: null,
+        contact_id,
+        contact_name,
+        borrowed_date,
+      };
+
+      const createdBorrowedBook = await createBorrowedBook(payload, token);
+      setBooks(prev => [createdBorrowedBook, ...prev]);
+      setShowAddBorrowedBookModal(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -147,6 +170,7 @@ export default function CollectionPage() {
           <AddBorrowedBookModal
             isOpen={showAddBorrowedBookModal}
             onClose={() => setShowAddBorrowedBookModal(false)}
+            onSave={handleCreateBorrowedBook}
           />
         )}
 
@@ -165,6 +189,7 @@ export default function CollectionPage() {
         <AddBorrowedBookModal
           isOpen={showAddBorrowedBookModal}
           onClose={() => setShowAddBorrowedBookModal(false)}
+          onSave={handleCreateBorrowedBook}
         />
       )}
 

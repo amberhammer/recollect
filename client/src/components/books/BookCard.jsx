@@ -1,10 +1,21 @@
 export default function BookCard({ title, author, thumbnail }) {
     console.log("BookCard props:", { author });
     let authorName = "Unknown Author";
-    if (typeof author === "string") {
-        authorName = author.slice(2).slice(0, -2);
-    } else if (Array.isArray(author) && author.length > 0) {
+    if (Array.isArray(author) && author.length > 0) {
         authorName = author[0];
+    } else if (typeof author === "string" && author.trim()) {
+        if (author.startsWith("[") && author.endsWith("]")) {
+            try {
+                const authors = JSON.parse(author);
+                authorName = authors[0] || "Unknown Author";
+            } catch {
+                authorName = author;
+            }
+        } else if (author.startsWith("{") && author.endsWith("}")) {
+            authorName = author.slice(1, -1).split(",")[0]?.replaceAll('"', "") || "Unknown Author";
+        } else {
+            authorName = author;
+        }
     }
     return (
         <div className="bg-taupe-300 flex rounded-lg h-24 shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">

@@ -4,17 +4,35 @@ const db = require("../db");
 const createBorrowedBook = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { google_books_id, title, author, thumbnail, published_date, rating, contact_id, borrowed_date } = req.body;
-        if (!google_books_id || !title || !contact_id || !borrowed_date) {
+        const { google_books_id, title, author, thumbnail, published_date, rating, contact_id, contact_name, borrowed_date } = req.body;
+
+        let finalContactId = contact_id;
+        if (!finalContactId && contact_name) {
+            const existingContact = await db.query("SELECT id FROM contacts WHERE user_id = $1 AND name = $2", [userId, contact_name]);
+            if (existingContact.rows.length > 0) {
+                finalContactId = existingContact.rows[0].id;
+            } else {
+                const newContact = await db.query("INSERT INTO contacts (user_id, name) VALUES ($1, $2) RETURNING id", [userId, contact_name]);
+                finalContactId = newContact.rows[0].id;
+            }
+        }
+
+        if (!google_books_id || !title || !finalContactId || !borrowed_date) {
             return res.status(400).json({
                 message: "Required fields are missing",
             });
         }
         const result = await db.query(
             "INSERT INTO borrowed_books (user_id, google_books_id, title, author, thumbnail, published_date, rating, contact_id, borrowed_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
-            [userId, google_books_id, title, author, thumbnail, published_date, rating, contact_id, borrowed_date]
+            [userId, google_books_id, title, author, thumbnail, published_date, rating, finalContactId, borrowed_date]
         );
-        res.status(201).json(result.rows[0]);
+
+        const createdBorrowedBook = await db.query(
+            "SELECT bb.*, c.name AS lender_name, c.name AS contact_name FROM borrowed_books bb JOIN contacts c ON bb.contact_id = c.id WHERE bb.id = $1",
+            [result.rows[0].id]
+        );
+
+        res.status(201).json(createdBorrowedBook.rows[0]);
     } catch (err) {
         console.error(err);
         res.status(500).json({
