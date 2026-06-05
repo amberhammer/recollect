@@ -4,7 +4,7 @@ const db = require("../db");
 const createBorrowedBook = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { google_books_id, title, author, thumbnail, published_date, rating, contact_id, contact_name, borrowed_date } = req.body;
+        const { google_books_id, title, author, thumbnail, published_date, rating, contact_id, contact_name, borrowed_date, status } = req.body;
 
         let finalContactId = contact_id;
         if (!finalContactId && contact_name) {
@@ -23,8 +23,8 @@ const createBorrowedBook = async (req, res) => {
             });
         }
         const result = await db.query(
-            "INSERT INTO borrowed_books (user_id, google_books_id, title, author, thumbnail, published_date, rating, contact_id, borrowed_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
-            [userId, google_books_id, title, author, thumbnail, published_date, rating, finalContactId, borrowed_date]
+            "INSERT INTO borrowed_books (user_id, google_books_id, title, author, thumbnail, published_date, rating, contact_id, borrowed_date, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+            [userId, google_books_id, title, author, thumbnail, published_date, rating, finalContactId, borrowed_date, "borrowed"]
         );
 
         const createdBorrowedBook = await db.query(
