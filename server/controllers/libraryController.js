@@ -19,7 +19,7 @@ const getCollectionBooks = async (req, res) => {
     const userId = req.user.id;
     const { collection } = req.params;
 
-    if (!["favorites", "currently-reading", "to-read", "borrowed", "borrowing"].includes(collection)) {
+    if (!["favorites", "currently-reading", "to-read", "loaned-out", "borrowed-books"].includes(collection)) {
       return res.status(400).json({
         message: "Invalid collection",
       });
@@ -49,7 +49,7 @@ const getCollectionBooks = async (req, res) => {
       return res.json(books.rows);
     }
 
-    if (collection === "borrowed") {
+    if (collection === "loaned-out") {
       const books = await db.query(
         "SELECT * FROM user_books ub WHERE ub.user_id = $1 AND EXISTS (SELECT 1 FROM loans l WHERE l.user_book_id = ub.id AND l.returned_date IS NULL)",
         [userId]
@@ -57,7 +57,7 @@ const getCollectionBooks = async (req, res) => {
       return res.json(books.rows);
     }
 
-    if (collection === "borrowing") {
+    if (collection === "borrowed-books") {
       const books = await db.query(
         "SELECT bb.*, c.name AS lender_name FROM borrowed_books bb LEFT JOIN contacts c ON bb.contact_id = c.id WHERE bb.user_id = $1 AND bb.returned_date IS NULL",
         [userId]

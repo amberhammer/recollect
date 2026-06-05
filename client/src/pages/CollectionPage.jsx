@@ -7,12 +7,14 @@ import Footer from "../components/layout/Footer";
 import NavBar from "../components/layout/NavBar";
 import BackButton from "../components/layout/BackButton";
 import BookGrid from "../components/books/BookGrid";
+import AddBorrowedBookModal from "../components/books/AddBorrowedBookModal";
 
 export default function CollectionPage() {
   const { collection } = useParams();
   const { token } = useAuth();
 
   const [books, setBooks] = useState([]);
+  const [showAddBorrowedBookModal, setShowAddBorrowedBookModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -35,18 +37,29 @@ export default function CollectionPage() {
         "To Read",
     },
 
-    borrowed: {
-      displayName: "Borrowed",
+    "loaned-out": {
+      displayName: "Loaned Out",
     },
 
-    borrowing: {
-      displayName: "Borrowing",
+    "borrowed-books": {
+      displayName: "Borrowed",
     },
   };
 
   const currentCollection = collection || "all";
   const currentConfig = collections[currentCollection] || collections.all;
   const displayName = currentConfig.displayName;
+  const isBorrowedBooksCollection = currentCollection === "borrowed-books";
+
+  const addBorrowedBookButton = isBorrowedBooksCollection ? (
+    <button
+      type="button"
+      onClick={() => setShowAddBorrowedBookModal(true)}
+      className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-3 rounded text-sm"
+    >
+      Add Borrowed Book
+    </button>
+  ) : null;
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -121,14 +134,19 @@ export default function CollectionPage() {
 
         <div className="flex-grow flex justify-center p-4">
           <div className="w-[700px]">
-            <div className="grid grid-cols-[96px_1fr_96px] items-center mb-6">
+            <div className="grid grid-cols-[170px_1fr_170px] items-center mb-6">
               <BackButton to="/" />
               <h2 className="text-2xl font-bold text-center">{displayName}</h2>
-              <div aria-hidden="true" />
+              <div className="flex justify-end">{addBorrowedBookButton}</div>
             </div>
             <p className="text-center">No books found in this collection.</p>
           </div>
         </div>
+
+        <AddBorrowedBookModal
+          isOpen={showAddBorrowedBookModal}
+          onClose={() => setShowAddBorrowedBookModal(false)}
+        />
 
         <Footer />
       </div>
@@ -139,7 +157,12 @@ export default function CollectionPage() {
     <div className="min-h-screen flex flex-col">
       <NavBar />
 
-      <BookGrid displayName={displayName} books={books} backTo="/" />
+      <BookGrid displayName={displayName} books={books} backTo="/" headerAction={addBorrowedBookButton} />
+
+      <AddBorrowedBookModal
+        isOpen={showAddBorrowedBookModal}
+        onClose={() => setShowAddBorrowedBookModal(false)}
+      />
 
       <Footer />
     </div>

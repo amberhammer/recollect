@@ -2,16 +2,16 @@ import { Link, useLocation } from "react-router-dom";
 import BookCard from "./BookCard";
 import BackButton from "../layout/BackButton";
 
-export default function BookGrid({ displayName, books, backTo = "/" }) {
+export default function BookGrid({ displayName, books, backTo = "/", headerAction = null }) {
     const location = useLocation();
 
     return (
         <div className="flex-grow flex justify-center p-4">
             <div>
-                <div className="grid grid-cols-[96px_1fr_96px] items-center mb-6 w-[700px]">
+                <div className="grid grid-cols-[170px_1fr_170px] items-center mb-6 w-[700px]">
                     <BackButton to={backTo} />
                     <h2 className="text-2xl font-bold text-center">{displayName}</h2>
-                    <div aria-hidden="true" />
+                    <div className="flex justify-end">{headerAction}</div>
                 </div>
                 <div className="grid grid-cols-2 gap-5 max-h-[570px] w-[700px] overflow-y-auto no-scrollbar">
                     {books.map((book) => (
@@ -28,7 +28,7 @@ export default function BookGrid({ displayName, books, backTo = "/" }) {
                         >
                             <BookCard
                                 title={book.title}
-                                author={book.authors || "Unknown Author"}
+                                author={book.authors || book.author || "Unknown Author"}
                                 thumbnail={book.thumbnail}
                             />
                         </Link>

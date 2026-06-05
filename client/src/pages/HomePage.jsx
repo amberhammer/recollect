@@ -25,11 +25,11 @@ export default function HomePage() {
                         <Link to="/library/to-read" style={{ textDecoration: 'none', color: 'inherit' }}>
                             <Cabinet collectionName="To Read" />
                         </Link>
-                        <Link to="/library/borrowed" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <Link to="/library/borrowed-books" style={{ textDecoration: 'none', color: 'inherit' }}>
                             <Cabinet collectionName="Borrowed" />
                         </Link>
-                        <Link to="/library/borrowing" style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <Cabinet collectionName="Borrowing" />
+                        <Link to="/library/loaned-out" style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Cabinet collectionName="Loaned Out" />
                         </Link>
                     </div>
                 </div>
