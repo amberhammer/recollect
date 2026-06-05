@@ -1,0 +1,133 @@
+require("dotenv").config();
+const db = require("../db");
+
+const createBorrowedBook = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { google_books_id, title, author, thumbnail, published_date, rating, contact_id, borrowed_date } = req.body;
+        if (!google_books_id || !title || !contact_id || !borrowed_date) {
+            return res.status(400).json({
+                message: "Required fields are missing",
+            });
+        }
+        const result = await db.query(
+            "INSERT INTO borrowed_books (user_id, google_books_id, title, author, thumbnail, published_date, rating, contact_id, borrowed_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
+            [userId, google_books_id, title, author, thumbnail, published_date, rating, contact_id, borrowed_date]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error creating borrowed book",
+        });
+    }
+};
+
+const getBorrowedBooks = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const result = await db.query(
+            "SELECT bb.*, c.name AS contact_name FROM borrowed_books bb JOIN contacts c ON bb.contact_id = c.id WHERE bb.user_id = $1 ORDER BY borrowed_date DESC",
+            [userId]
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error fetching borrowed books",
+        });
+    }
+};
+
+const getBorrowedBookById = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { id } = req.params;
+        const result = await db.query(
+            "SELECT bb.*, c.name AS contact_name FROM borrowed_books bb JOIN contacts c ON bb.contact_id = c.id WHERE bb.user_id = $1 AND bb.id = $2",
+            [userId, id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                message: "Borrowed book not found",
+            });
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error fetching borrowed book",
+        });
+    }
+};
+
+const updateBorrowedBook = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { id } = req.params;
+        const { rating, contact_id, borrowed_date } = req.body;
+        const result = await db.query(
+            "UPDATE borrowed_books SET rating = COALESCE($1, rating), contact_id = COALESCE($2, contact_id), borrowed_date = COALESCE($3, borrowed_date) WHERE user_id = $4 AND id = $5 RETURNING *",
+            [rating, contact_id, borrowed_date, userId, id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                message: "Borrowed book not found",
+            });
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error updating borrowed book",
+        });
+    }
+};
+
+const returnBorrowedBook = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { id } = req.params;
+        const result = await db.query(
+            "UPDATE borrowed_books SET returned_date = CURRENT_DATE WHERE user_id = $1 AND id = $2 RETURNING *",
+            [userId, id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                message: "Borrowed book not found",
+            });
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error returning borrowed book",
+        });
+    }
+};
+
+const deleteBorrowedBook = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { id } = req.params;
+        const result = await db.query(
+            "DELETE FROM borrowed_books WHERE user_id = $1 AND id = $2 RETURNING *",
+            [userId, id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                message: "Borrowed book not found",
+            });
+        }
+        res.json({
+            message: "Borrowed book deleted",
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error deleting borrowed book",
+        });
+    }
+};
+
+module.exports = { createBorrowedBook, getBorrowedBooks, getBorrowedBookById, updateBorrowedBook, returnBorrowedBook, deleteBorrowedBook };
