@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const booksRoutes = require('./routes/booksRoutes');
 const loansRoutes = require('./routes/loansRoutes');
 const contactsRoutes = require('./routes/contactsRoutes');
+const borrowedBooksRoutes = require('./routes/borrowedBooksRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/books', booksRoutes);
 app.use('/api/loans', loansRoutes);
 app.use('/api/contacts', contactsRoutes);
+app.use('/api/borrowed-books', borrowedBooksRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
