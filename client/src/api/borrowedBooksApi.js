@@ -24,4 +24,22 @@ const createBorrowedBook = async (payload, token) => {
     return response.data;
 };
 
-export { createBorrowedBook };
+const getBorrowedBookById = async (id, token) => {
+    const response = await API.get(`/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};
+
+const updateBorrowedBook = async (id, payload, token) => {
+    const response = await API.patch(`/${id}`, payload, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};
+
+export { createBorrowedBook, getBorrowedBookById, updateBorrowedBook };

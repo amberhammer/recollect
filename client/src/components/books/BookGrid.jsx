@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import BookCard from "./BookCard";
 import BackButton from "../layout/BackButton";
 
-export default function BookGrid({ displayName, books, backTo = "/", headerAction = null }) {
+export default function BookGrid({ displayName, books, backTo = "/", headerAction = null, getBookLink = null }) {
     const location = useLocation();
 
     return (
@@ -17,7 +17,7 @@ export default function BookGrid({ displayName, books, backTo = "/", headerActio
                     {books.map((book) => (
                         <Link
                             key={book.id || book.google_books_id}
-                            to={`/books/${book.google_books_id}`}
+                            to={getBookLink ? getBookLink(book) : `/books/${book.google_books_id}`}
                             state={{
                                 from: {
                                     pathname: location.pathname,

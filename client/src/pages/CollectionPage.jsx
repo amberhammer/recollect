@@ -71,6 +71,8 @@ export default function CollectionPage() {
         thumbnail: book.thumbnail,
         published_date: book.published_date,
         rating: null,
+        status: "borrowed",
+        is_favorite: false,
         contact_id,
         contact_name,
         borrowed_date,
@@ -183,7 +185,13 @@ export default function CollectionPage() {
     <div className="min-h-screen flex flex-col">
       <NavBar />
 
-      <BookGrid displayName={displayName} books={books} backTo="/" headerAction={addBorrowedBookButton} />
+      <BookGrid
+        displayName={displayName}
+        books={books}
+        backTo="/"
+        headerAction={addBorrowedBookButton}
+        getBookLink={isBorrowedBooksCollection ? (book) => `/borrowed-books/${book.id}` : null}
+      />
 
       {showAddBorrowedBookModal && (
         <AddBorrowedBookModal
