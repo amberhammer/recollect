@@ -143,10 +143,12 @@ export default function CollectionPage() {
           </div>
         </div>
 
-        <AddBorrowedBookModal
-          isOpen={showAddBorrowedBookModal}
-          onClose={() => setShowAddBorrowedBookModal(false)}
-        />
+        {showAddBorrowedBookModal && (
+          <AddBorrowedBookModal
+            isOpen={showAddBorrowedBookModal}
+            onClose={() => setShowAddBorrowedBookModal(false)}
+          />
+        )}
 
         <Footer />
       </div>
@@ -159,10 +161,12 @@ export default function CollectionPage() {
 
       <BookGrid displayName={displayName} books={books} backTo="/" headerAction={addBorrowedBookButton} />
 
-      <AddBorrowedBookModal
-        isOpen={showAddBorrowedBookModal}
-        onClose={() => setShowAddBorrowedBookModal(false)}
-      />
+      {showAddBorrowedBookModal && (
+        <AddBorrowedBookModal
+          isOpen={showAddBorrowedBookModal}
+          onClose={() => setShowAddBorrowedBookModal(false)}
+        />
+      )}
 
       <Footer />
     </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function SearchBar() {
+export default function SearchBar({ onSearch, placeholder = "Search...", buttonText = "Search" }) {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -10,6 +10,11 @@ export default function SearchBar() {
     const handleSearch = (e) => {
         e.preventDefault();
         if (query.trim()) {
+            if (onSearch) {
+                onSearch(query.trim());
+                return;
+            }
+
             navigate(`/search?q=${encodeURIComponent(query)}`, {
                 state: {
                     from: {
@@ -26,7 +31,7 @@ export default function SearchBar() {
             <div className="flex border border-gray-300 rounded-lg overflow-hidden bg-white">
                 <input
                     type="text"
-                    placeholder="Search..."
+                    placeholder={placeholder}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     className="flex-1 px-3 py-2 text-gray-700 focus:outline-none"
@@ -34,7 +39,7 @@ export default function SearchBar() {
                 <button
                     onClick={handleSearch}
                     className="px-4 py-2 bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-sm">
-                    Search
+                    {buttonText}
                 </button>
             </div>
         </div>
