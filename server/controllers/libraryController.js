@@ -51,7 +51,7 @@ const getCollectionBooks = async (req, res) => {
 
     if (collection === "borrowed") {
       const books = await db.query(
-        "SELECT * FROM user_books WHERE user_id = $1 AND status = 'borrowed'",
+        "SELECT * FROM user_books ub WHERE ub.user_id = $1 AND EXISTS (SELECT 1 FROM loans l WHERE l.user_book_id = ub.id AND l.returned_date IS NULL)",
         [userId]
       );
       return res.json(books.rows);
