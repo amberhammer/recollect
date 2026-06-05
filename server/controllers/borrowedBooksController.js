@@ -70,7 +70,13 @@ const getBorrowedBookById = async (req, res) => {
                 message: "Borrowed book not found",
             });
         }
-        res.json(result.rows[0]);
+
+        const returnedBorrowedBook = await db.query(
+            "SELECT bb.*, c.name AS lender_name, c.name AS contact_name FROM borrowed_books bb JOIN contacts c ON bb.contact_id = c.id WHERE bb.id = $1",
+            [result.rows[0].id]
+        );
+
+        res.json(returnedBorrowedBook.rows[0]);
     } catch (err) {
         console.error(err);
         res.status(500).json({

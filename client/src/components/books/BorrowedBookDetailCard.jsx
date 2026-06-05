@@ -1,6 +1,6 @@
 import BorrowedBookControls from "./BorrowedBookControls";
 
-export default function BorrowedBookDetailCard({ book, onEdit, onFavoriteToggle }) {
+export default function BorrowedBookDetailCard({ book, onEdit, onFavoriteToggle, onReturn }) {
     const formatDate = (date) => date ? String(date).slice(0, 10) : "—";
 
     return (
@@ -11,6 +11,7 @@ export default function BorrowedBookDetailCard({ book, onEdit, onFavoriteToggle 
                     book={book}
                     onEdit={onEdit}
                     onFavoriteToggle={onFavoriteToggle}
+                    onReturn={onReturn}
                 />
             </div>
             <div>

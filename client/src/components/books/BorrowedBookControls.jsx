@@ -1,4 +1,4 @@
-export default function BorrowedBookControls({ book, onEdit, onFavoriteToggle }) {
+export default function BorrowedBookControls({ book, onEdit, onFavoriteToggle, onReturn }) {
     const rating = book.rating ?? "—";
     const status = book.status || "borrowed";
 
@@ -15,14 +15,22 @@ export default function BorrowedBookControls({ book, onEdit, onFavoriteToggle })
                         {book.is_favorite ? "♥" : "♡"}
                     </button>
                 </div>
-                <p className="text-xl mb-2"><span className="font-semibold">STATUS:</span> {status.replaceAll("_", " ").toUpperCase()}</p>
+                <p className="text-xl mb-4"><span className="font-semibold">STATUS:</span> {status.replaceAll("_", " ").toUpperCase()}</p>
+                {!book.returned_date && (
+                    <button
+                        type="button"
+                        onClick={onReturn}
+                        className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded w-20"
+                    >
+                        Return
+                    </button>
+                )}
             </div>
             <div>
                 <button
                     type="button"
                     className="bg-taupe-400 hover:bg-taupe-500 text-black font-bold py-2 px-4 rounded"
-                    onClick={onEdit}
-                >
+                    onClick={onEdit}>
                     ...
                 </button>
             </div>

@@ -1,7 +1,7 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import { getBorrowedBookById, updateBorrowedBook } from "../api/borrowedBooksApi";
+import { getBorrowedBookById, returnBorrowedBook, updateBorrowedBook } from "../api/borrowedBooksApi";
 import { getContacts } from "../api/contactsApi";
 
 import NavBar from "../components/layout/NavBar";
@@ -13,6 +13,7 @@ import EditBorrowedBookModal from "../components/books/EditBorrowedBookModal";
 export default function BorrowedBookDetailPage() {
     const { borrowedBookId } = useParams();
     const location = useLocation();
+    const navigate = useNavigate();
     const { token } = useAuth();
 
     const [book, setBook] = useState(null);
@@ -85,6 +86,22 @@ export default function BorrowedBookDetailPage() {
         await handleBorrowedBookUpdate(updatedBook);
     };
 
+    const handleReturnBorrowedBook = async () => {
+        if (!book?.id) return;
+
+        try {
+            const returnedBook = await returnBorrowedBook(book.id, token);
+            setBook(returnedBook);
+            navigate("/library/borrowed-books", {
+                state: {
+                    from: `/borrowed-books/${book.id}`,
+                },
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen flex flex-col">
@@ -122,6 +139,7 @@ export default function BorrowedBookDetailPage() {
                         book={book}
                         onEdit={() => setShowEditModal(true)}
                         onFavoriteToggle={handleFavoriteToggle}
+                        onReturn={handleReturnBorrowedBook}
                     />
                 </div>
 
