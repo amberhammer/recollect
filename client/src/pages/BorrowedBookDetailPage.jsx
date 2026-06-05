@@ -1,7 +1,7 @@
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import { getBorrowedBookById, returnBorrowedBook, updateBorrowedBook } from "../api/borrowedBooksApi";
+import { deleteBorrowedBook, getBorrowedBookById, returnBorrowedBook, updateBorrowedBook } from "../api/borrowedBooksApi";
 import { getContacts } from "../api/contactsApi";
 
 import NavBar from "../components/layout/NavBar";
@@ -9,6 +9,7 @@ import BackButton from "../components/layout/BackButton";
 import Footer from "../components/layout/Footer";
 import BorrowedBookDetailCard from "../components/books/BorrowedBookDetailCard";
 import EditBorrowedBookModal from "../components/books/EditBorrowedBookModal";
+import ConfirmDeleteModal from "../components/books/ConfirmDeleteModal";
 
 export default function BorrowedBookDetailPage() {
     const { borrowedBookId } = useParams();
@@ -21,6 +22,7 @@ export default function BorrowedBookDetailPage() {
     const [contactsLoading, setContactsLoading] = useState(false);
     const [contactsError, setContactsError] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -102,6 +104,23 @@ export default function BorrowedBookDetailPage() {
         }
     };
 
+    const handleOpenDeleteConfirm = () => {
+        setShowDeleteConfirm(true);
+    };
+
+    const handleDeleteBorrowedBook = async () => {
+        if (!book?.id) return;
+
+        try {
+            await deleteBorrowedBook(book.id, token);
+            setShowDeleteConfirm(false);
+            setShowEditModal(false);
+            navigate("/library/borrowed-books", { replace: true });
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen flex flex-col">
@@ -152,8 +171,17 @@ export default function BorrowedBookDetailPage() {
                         isOpen={showEditModal}
                         onClose={() => setShowEditModal(false)}
                         onSave={handleBorrowedBookUpdate}
+                        onDelete={handleOpenDeleteConfirm}
                     />
                 )}
+
+                <ConfirmDeleteModal
+                    isOpen={showDeleteConfirm}
+                    onClose={() => setShowDeleteConfirm(false)}
+                    onConfirm={handleDeleteBorrowedBook}
+                    title="Remove Borrowed Book"
+                    message="Are you sure you want to remove this book from your borrowed books?"
+                />
             </div>
 
             <Footer />

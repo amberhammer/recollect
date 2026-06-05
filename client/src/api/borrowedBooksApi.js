@@ -51,4 +51,13 @@ const returnBorrowedBook = async (id, token) => {
     return response.data;
 };
 
-export { createBorrowedBook, getBorrowedBookById, updateBorrowedBook, returnBorrowedBook };
+const deleteBorrowedBook = async (id, token) => {
+    const response = await API.delete(`/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};
+
+export { createBorrowedBook, deleteBorrowedBook, getBorrowedBookById, updateBorrowedBook, returnBorrowedBook };

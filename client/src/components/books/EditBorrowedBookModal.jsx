@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function EditBorrowedBookModal({ isOpen, onClose, book, contacts = [], contactsLoading = false, contactsError = null, onSave }) {
+export default function EditBorrowedBookModal({ isOpen, onClose, onDelete, book, contacts = [], contactsLoading = false, contactsError = null, onSave }) {
     const [status, setStatus] = useState(book.status || "borrowed");
     const [rating, setRating] = useState(book.rating ?? "");
     const [isFavorite, setIsFavorite] = useState(!!book.is_favorite);
@@ -96,8 +96,8 @@ export default function EditBorrowedBookModal({ isOpen, onClose, book, contacts 
                     <button type="button" onClick={handleSubmit} className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold h-10 py-2 px-4 rounded mr-2">
                         Save
                     </button>
-                    <button type="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-600 text-white font-bold h-10 py-2 px-4 rounded">
-                        Cancel
+                    <button type="button" onClick={onDelete} className="bg-gray-500 hover:bg-gray-600 text-white font-bold h-10 py-2 px-4 rounded">
+                        Delete
                     </button>
                 </div>
             </div>
