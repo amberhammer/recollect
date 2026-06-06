@@ -25,6 +25,11 @@ db.query("SELECT NOW()")
   .then(() => console.log("Database connected"))
   .catch(err => console.error("DB connection failed", err));
 
+
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
 app.use('/api/library', libraryRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/books', booksRoutes);
