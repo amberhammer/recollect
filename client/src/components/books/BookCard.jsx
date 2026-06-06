@@ -1,5 +1,7 @@
+import NoThumbnailPlaceholder from "./NoThumbnailPlaceholder";
+
 export default function BookCard({ title, author, thumbnail }) {
-    console.log("BookCard props:", { author });
+
     let authorName = "Unknown Author";
     if (Array.isArray(author) && author.length > 0) {
         authorName = author[0];
@@ -19,7 +21,11 @@ export default function BookCard({ title, author, thumbnail }) {
     }
     return (
         <div className="bg-taupe-300 flex rounded-lg h-24 shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-            <img src={thumbnail} alt={`${title} cover`} className="h-auto m-2 rounded" />
+            {thumbnail ? (
+                <img src={thumbnail} alt={`${title} cover`} className="h-auto m-2 rounded" />
+            ) : (
+                <NoThumbnailPlaceholder className="h-20 w-14 m-2 shrink-0" textClassName="text-gray-900 text-xs" />
+            )}
             <div className="p-4 min-w-0">
                 <h3 className="text-md font-semibold truncate">{title}</h3>
                 <p className="text-gray-600 truncate">{authorName}</p>

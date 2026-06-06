@@ -3,6 +3,7 @@ import { getContacts } from "../../api/contactsApi";
 import { searchBooks } from "../../api/booksApi";
 import SearchBar from "../layout/SearchBar";
 import BookCard from "./BookCard";
+import NoThumbnailPlaceholder from "./NoThumbnailPlaceholder";
 
 export default function AddBorrowedBookModal({ isOpen, onClose, onSave }) {
   const [searchResults, setSearchResults] = useState([]);
@@ -109,6 +110,7 @@ export default function AddBorrowedBookModal({ isOpen, onClose, onSave }) {
                     {book.thumbnail && (
                       <img src={book.thumbnail} alt={`${book.title} cover`} className="h-12 w-8 rounded object-cover" />
                     )}
+                    {!book.thumbnail && (<NoThumbnailPlaceholder />)}
                     <span className="min-w-0">
                       <span className="block truncate font-semibold">{book.title}</span>
                       <span className="block truncate text-sm text-gray-600">

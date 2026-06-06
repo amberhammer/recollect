@@ -1,6 +1,7 @@
 import LibraryBookControls from "./LibraryBookControls";
 import AddToLibraryButton from "./AddToLibraryButton";
 import ReturnButton from "./ReturnButton";
+import NoThumbnailPlaceholder from "./NoThumbnailPlaceholder";
 
 export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, onEdit, onDelete, onLend, onFavoriteUpdate, onReturnLoan }) {
     const currentLoan = bookData.currentLoan;
@@ -16,7 +17,11 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
     return (
         <div className="bg-taupe-200 rounded-4xl rounded-b-none shadow-md w-[600px] mt-6">
             <div className="flex gap-6 m-8 mb-6 pt-8">
-                <img src={bookData.book.thumbnail} alt={`${bookData.book.title} cover`} className="h-52 rounded" />
+                {bookData.book.thumbnail ? (
+                    <img src={bookData.book.thumbnail} alt={`${bookData.book.title} cover`} className="h-52 rounded" />
+                ) : (
+                    <NoThumbnailPlaceholder />
+                )}
                 {isInLibrary ? (
                     <LibraryBookControls book={bookData.libraryEntry} onEdit={onEdit} onDelete={onDelete} onLend={onLend} onFavoriteUpdate={onFavoriteUpdate} />
                 ) : (

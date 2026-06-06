@@ -1,4 +1,5 @@
 import BorrowedBookControls from "./BorrowedBookControls";
+import NoThumbnailPlaceholder from "./NoThumbnailPlaceholder";
 
 export default function BorrowedBookDetailCard({ book, onEdit, onFavoriteToggle, onReturn }) {
     const formatDate = (date) => date ? String(date).slice(0, 10) : "—";
@@ -6,7 +7,11 @@ export default function BorrowedBookDetailCard({ book, onEdit, onFavoriteToggle,
     return (
         <div className="bg-taupe-200 rounded-4xl rounded-b-none shadow-md w-[600px] mt-6">
             <div className="flex gap-6 m-8 mb-6 pt-8">
-                <img src={book.thumbnail} alt={`${book.title} cover`} className="h-52 rounded" />
+                {book.thumbnail ? (
+                    <img src={book.thumbnail} alt={`${book.title} cover`} className="h-52 rounded" />
+                ) : (
+                    <NoThumbnailPlaceholder />
+                )}
                 <BorrowedBookControls
                     book={book}
                     onEdit={onEdit}
