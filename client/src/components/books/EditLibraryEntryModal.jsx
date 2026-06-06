@@ -4,15 +4,15 @@ import { editLibraryEntry } from "../../api/booksApi";
 export default function EditLibraryEntryModal({ isOpen, onClose, book, onSave, onDelete }) {
     console.log("Modal rendered", { isOpen, book, onClose, onSave, onDelete });
     const [status, setStatus] = useState(book.status);
-    const [rating, setRating] = useState(book.rating);
+    const [rating, setRating] = useState(book.rating ?? "");
     const [format, setFormat] = useState(book.format);
-    const [isFavorite, setIsFavorite] = useState(book.is_favorite);
+    const [isFavorite, setIsFavorite] = useState(!!book.is_favorite);
 
     const handleSubmit = async () => {
         const payload = {
             ...book,
             status: status,
-            rating: rating,
+            rating: rating === "" ? null : Number(rating),
             format: format,
             is_favorite: isFavorite,
         };
@@ -44,7 +44,7 @@ export default function EditLibraryEntryModal({ isOpen, onClose, book, onSave, o
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Rating</label>
-                        <input type="number" min="1" max="5" value={rating} onChange={(e) => setRating(parseInt(e.target.value))} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" />
+                        <input type="number" min="1" max="5" value={rating} onChange={(e) => setRating(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" />
                     </div>
 
                     <div>
