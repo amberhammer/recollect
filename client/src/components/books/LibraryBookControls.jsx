@@ -3,10 +3,13 @@ import { editLibraryEntry } from "../../api/booksApi";
 
 export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate, onLend }) {
     const [isFavorited, setIsFavorited] = useState(book?.is_favorite || false);
+    const ratingDisplay = book.rating == null ? "No rating" : `${book.rating} / 5`;
+    const statusDisplay = book.status?.replaceAll("_", " ").toUpperCase();
 
     const handleFavoriteToggle = async () => {
         try {
-            setIsFavorited(!isFavorited);
+            const nextFavorite = !isFavorited;
+            setIsFavorited(nextFavorite);
             const payload = {
                 title: book.title,
                 authors: book.authors,
@@ -16,10 +19,10 @@ export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate, on
                 status: book.status,
                 rating: book.rating,
                 format: book.format,
-                is_favorite: !isFavorited,
-            }
+                is_favorite: nextFavorite,
+            };
             await editLibraryEntry(book.google_books_id, payload);
-            onFavoriteUpdate(!isFavorited);
+            onFavoriteUpdate(nextFavorite);
         } catch (err) {
             console.error("Error updating favorite status:", err);
             setIsFavorited(isFavorited);
@@ -30,20 +33,22 @@ export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate, on
         <div className="flex flex-row justify-end">
             <div className="flex flex-col w-80">
                 <div className="flex items-center gap-4 mb-2">
-                    <p className="text-xl font-semibold">★  {book.rating} / 5</p>
+                    <p className="text-xl font-semibold">★ {ratingDisplay}</p>
                     <button onClick={handleFavoriteToggle} className="text-3xl text-red-500 hover:scale-110 transition-transform">
                         {isFavorited ? "♥" : "♡"}
                     </button>
                 </div>
-                <p className="text-xl mb-2"><span className="font-semibold">STATUS:</span> {book.status?.toUpperCase()}</p>
+                <p className="text-xl mb-2"><span className="font-semibold">STATUS:</span> {statusDisplay}</p>
                 <p className="text-xl mb-3"><span className="font-semibold">FORMAT:</span> {book.format?.toUpperCase()}</p>
                 <button onClick={onLend} className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded w-20">Lend</button>
             </div>
             <div>
-                <button className="bg-taupe-400 hover:bg-taupe-500 text-black font-bold py-2 px-4 rounded" onClick={() => {
-                    console.log("Edit clicked");
-                    onEdit();
-                }}>...</button>
+                <button
+                    className="bg-taupe-400 hover:bg-taupe-500 text-black font-bold py-2 px-4 rounded"
+                    onClick={onEdit}
+                >
+                    ...
+                </button>
             </div>
         </div>
     );

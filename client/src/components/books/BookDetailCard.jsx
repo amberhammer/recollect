@@ -29,7 +29,7 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
                 )}
             </div>
             <div>
-                <p className="text-xl border-t-3 border-taupe-400 px-8 py-3"><span className="font-semibold">TITLE:</span> {bookData.book.title}</p>
+                <p className="text-xl border-t-3 border-taupe-400 px-8 py-3"><span className="font-semibold">TITLE:</span> {bookData.book.title} ({bookData.book.published_date ? new Date(bookData.book.published_date).getFullYear() : "Unknown"})</p>
             </div>
             <div>
                 <p className="text-xl border-t-3 border-b-3 border-taupe-400 px-8 py-3"><span className="font-semibold">AUTHOR:</span> {bookData.book.authors.join(", ") || "Unknown"}</p>

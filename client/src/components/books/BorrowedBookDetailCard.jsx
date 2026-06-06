@@ -3,6 +3,7 @@ import NoThumbnailPlaceholder from "./NoThumbnailPlaceholder";
 
 export default function BorrowedBookDetailCard({ book, onEdit, onFavoriteToggle, onReturn }) {
     const formatDate = (date) => date ? String(date).slice(0, 10) : "—";
+    const publishedYear = book.published_date ? new Date(book.published_date).getFullYear() : "Unknown";
 
     return (
         <div className="bg-taupe-200 rounded-4xl rounded-b-none shadow-md w-[600px] mt-6">
@@ -20,7 +21,7 @@ export default function BorrowedBookDetailCard({ book, onEdit, onFavoriteToggle,
                 />
             </div>
             <div>
-                <p className="text-xl border-t-3 border-taupe-400 px-8 py-3"><span className="font-semibold">TITLE:</span> {book.title}</p>
+                <p className="text-xl border-t-3 border-taupe-400 px-8 py-3"><span className="font-semibold">TITLE:</span> {book.title} ({publishedYear})</p>
             </div>
             <div>
                 <p className="text-xl border-t-3 border-b-3 border-taupe-400 px-8 py-3"><span className="font-semibold">AUTHOR:</span> {book.author || "Unknown Author"}</p>

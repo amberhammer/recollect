@@ -75,8 +75,8 @@ export default function AddBorrowedBookModal({ isOpen, onClose, onSave }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-lg rounded-lg bg-white p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
+      <div className="w-full max-w-lg rounded-lg bg-white p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold">Add Borrowed Book</h2>
           <button
@@ -128,6 +128,7 @@ export default function AddBorrowedBookModal({ isOpen, onClose, onSave }) {
               title={selectedBook.title}
               author={selectedBook.authors || "Unknown Author"}
               thumbnail={selectedBook.thumbnail}
+              publishedDate={selectedBook.published_date}
             />
           )}
 

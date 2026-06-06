@@ -30,6 +30,7 @@ export default function BookGrid({ displayName, books, backTo = "/", headerActio
                                 title={book.title}
                                 author={book.authors || book.author || "Unknown Author"}
                                 thumbnail={book.thumbnail}
+                                publishedDate={book.published_date}
                             />
                         </Link>
                     ))}

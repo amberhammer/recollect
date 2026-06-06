@@ -1,6 +1,6 @@
 import NoThumbnailPlaceholder from "./NoThumbnailPlaceholder";
 
-export default function BookCard({ title, author, thumbnail }) {
+export default function BookCard({ title, author, thumbnail, publishedDate }) {
 
     let authorName = "Unknown Author";
     if (Array.isArray(author) && author.length > 0) {
@@ -29,6 +29,9 @@ export default function BookCard({ title, author, thumbnail }) {
             <div className="p-4 min-w-0">
                 <h3 className="text-md font-semibold truncate">{title}</h3>
                 <p className="text-gray-600 truncate">{authorName}</p>
+                {publishedDate && (
+                    <p className="text-sm text-gray-500">{new Date(publishedDate).getFullYear()}</p>
+                )}
             </div>
         </div>
     );

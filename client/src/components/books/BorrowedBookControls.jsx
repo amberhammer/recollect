@@ -1,12 +1,12 @@
 export default function BorrowedBookControls({ book, onEdit, onFavoriteToggle, onReturn }) {
-    const rating = book.rating ?? "—";
+    const ratingDisplay = book.rating == null ? "No rating" : `${book.rating} / 5`;
     const status = book.status || "borrowed";
 
     return (
         <div className="flex flex-row justify-end">
             <div className="flex flex-col w-80">
                 <div className="flex items-center gap-4 mb-2">
-                    <p className="text-xl font-semibold">★ {rating} / 5</p>
+                    <p className="text-xl font-semibold">★ {ratingDisplay}</p>
                     <button
                         type="button"
                         onClick={onFavoriteToggle}
@@ -30,7 +30,8 @@ export default function BorrowedBookControls({ book, onEdit, onFavoriteToggle, o
                 <button
                     type="button"
                     className="bg-taupe-400 hover:bg-taupe-500 text-black font-bold py-2 px-4 rounded"
-                    onClick={onEdit}>
+                    onClick={onEdit}
+                >
                     ...
                 </button>
             </div>
