@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import { apiUrl } from "../api/apiConfig";
 import { createBorrowedBook } from "../api/borrowedBooksApi";
 
 import Footer from "../components/layout/Footer";
@@ -92,9 +93,9 @@ export default function CollectionPage() {
       try {
         setLoading(true);
 
-        let endpoint = "/api/library";
+        let endpoint = apiUrl("/api/library");
         if (currentCollection !== "all") {
-          endpoint = `/api/library/${currentCollection}`;
+          endpoint = apiUrl(`/api/library/${currentCollection}`);
         }
 
         const response =

@@ -52,14 +52,12 @@ const addToLibrary = async (req, res) => {
             });
         }
 
-        await db.query(
+        const addedBook = await db.query(
             "INSERT INTO user_books (user_id, google_books_id, title, authors, description, thumbnail, published_date, status, rating, format) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
             [userId, google_books_id, title, authors, description, thumbnail, published_date, status, rating, format]
         );
 
-        res.status(201).json({
-            message: "Book added to library",
-        });
+        res.status(201).json(addedBook.rows[0]);
     } catch (err) {
         console.error(err);
         res.status(500).json({

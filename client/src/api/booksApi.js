@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { apiUrl } from './apiConfig';
 
 const API = axios.create({
-    baseURL: 'http://localhost:3000/api/books/',
+    baseURL: apiUrl('/api/books/'),
     headers: {
         'Content-Type': 'application/json',
     },

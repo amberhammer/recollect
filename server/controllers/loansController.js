@@ -3,19 +3,20 @@ const db = require("../db");
 const createLoan = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { user_book_id, contact_id, contact_name, loaned_date } = req.body;
+        const { user_book_id, google_books_id, contact_id, contact_name, loaned_date } = req.body;
 
-        if (!user_book_id || (!contact_id && !contact_name?.trim()) || !loaned_date) {
+        if ((!user_book_id && !google_books_id) || (!contact_id && !contact_name?.trim()) || !loaned_date) {
             return res.status(400).json({ error: "Book, contact, and loaned date are required" });
         }
 
         const userBook = await db.query(
-            "SELECT id FROM user_books WHERE id = $1 AND user_id = $2",
-            [user_book_id, userId]
+            "SELECT id FROM user_books WHERE user_id = $1 AND (id = $2 OR google_books_id = $3)",
+            [userId, user_book_id || null, google_books_id || null]
         );
         if (userBook.rows.length === 0) {
             return res.status(404).json({ error: "Book not found in your library" });
         }
+        const resolvedUserBookId = userBook.rows[0].id;
 
         let finalContactId = contact_id;
         if (finalContactId) {
@@ -37,14 +38,14 @@ const createLoan = async (req, res) => {
             }
         }
 
-        const existingLoan = await db.query("SELECT * FROM loans WHERE user_book_id = $1 AND returned_date IS NULL", [user_book_id]);
+        const existingLoan = await db.query("SELECT * FROM loans WHERE user_book_id = $1 AND returned_date IS NULL", [resolvedUserBookId]);
         if (existingLoan.rows.length > 0) {
             return res.status(400).json({ error: "Book is already loaned out" });
         }
 
         const loan = await db.query(
             "INSERT INTO loans (user_book_id, contact_id, loaned_date) VALUES ($1, $2, $3) RETURNING *",
-            [user_book_id, finalContactId, loaned_date]
+            [resolvedUserBookId, finalContactId, loaned_date]
         );
 
         const createdLoan = await db.query(

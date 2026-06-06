@@ -11,6 +11,7 @@ export default function LendModal({ book, contacts = [], contactsLoading = false
     const handleSubmit = () => {
         onSave?.({
             user_book_id: book.id,
+            google_books_id: book.google_books_id,
             contact_id: selectedContactId || null,
             contact_name: newContactName.trim() || null,
             loaned_date: loanedDate,

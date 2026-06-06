@@ -74,8 +74,8 @@ describe("loans routes", () => {
     expect(response.body).toEqual(createdLoan);
     expect(db.query).toHaveBeenNthCalledWith(
       1,
-      "SELECT id FROM user_books WHERE id = $1 AND user_id = $2",
-      [10, 42]
+      "SELECT id FROM user_books WHERE user_id = $1 AND (id = $2 OR google_books_id = $3)",
+      [42, 10, null]
     );
     expect(db.query).toHaveBeenNthCalledWith(
       2,
@@ -117,8 +117,8 @@ describe("loans routes", () => {
     expect(response.body).toEqual(createdLoan);
     expect(db.query).toHaveBeenNthCalledWith(
       1,
-      "SELECT id FROM user_books WHERE id = $1 AND user_id = $2",
-      [10, 42]
+      "SELECT id FROM user_books WHERE user_id = $1 AND (id = $2 OR google_books_id = $3)",
+      [42, 10, null]
     );
     expect(db.query).toHaveBeenNthCalledWith(
       2,
@@ -199,8 +199,8 @@ describe("loans routes", () => {
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ error: "Book not found in your library" });
     expect(db.query).toHaveBeenCalledWith(
-      "SELECT id FROM user_books WHERE id = $1 AND user_id = $2",
-      [999, 42]
+      "SELECT id FROM user_books WHERE user_id = $1 AND (id = $2 OR google_books_id = $3)",
+      [42, 999, null]
     );
   });
 
@@ -221,6 +221,37 @@ describe("loans routes", () => {
       2,
       "SELECT id FROM contacts WHERE id = $1 AND user_id = $2",
       [999, 42]
+    );
+  });
+
+  it("POST /api/loans resolves the user's book by google_books_id when user_book_id is missing", async () => {
+    const insertedLoan = { id: 23, user_book_id: 10, contact_id: 5, loaned_date: "2026-01-04" };
+    const createdLoan = { ...insertedLoan, contact_name: "Sam", returned_date: null };
+
+    db.query
+      .mockResolvedValueOnce({ rows: [{ id: 10 }] })
+      .mockResolvedValueOnce({ rows: [{ id: 5 }] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [insertedLoan] })
+      .mockResolvedValueOnce({ rows: [createdLoan] });
+
+    const response = await request(app).post("/api/loans").send({
+      google_books_id: "google-1",
+      contact_id: 5,
+      loaned_date: "2026-01-04",
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.body).toEqual(createdLoan);
+    expect(db.query).toHaveBeenNthCalledWith(
+      1,
+      "SELECT id FROM user_books WHERE user_id = $1 AND (id = $2 OR google_books_id = $3)",
+      [42, null, "google-1"]
+    );
+    expect(db.query).toHaveBeenNthCalledWith(
+      4,
+      "INSERT INTO loans (user_book_id, contact_id, loaned_date) VALUES ($1, $2, $3) RETURNING *",
+      [10, 5, "2026-01-04"]
     );
   });
 

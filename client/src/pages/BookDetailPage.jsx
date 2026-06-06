@@ -2,6 +2,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import { apiUrl } from "../api/apiConfig";
 import { addBookToLibrary, deleteLibraryEntry } from "../api/booksApi";
 import { getContacts } from "../api/contactsApi";
 import { createLoan, returnLoan } from "../api/loansApi";
@@ -37,7 +38,7 @@ export default function BookDetailPage() {
             try {
                 setLoading(true);
 
-                const response = await axios.get(`/api/books/${googleBooksId}`, {
+                const response = await axios.get(apiUrl(`/api/books/${googleBooksId}`), {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -86,11 +87,11 @@ export default function BookDetailPage() {
                 format: "physical",
             };
 
-            await addBookToLibrary(payload, token);
+            const createdLibraryEntry = await addBookToLibrary(payload, token);
 
             setBookData(prev => ({
                 ...prev,
-                libraryEntry: payload,
+                libraryEntry: createdLibraryEntry,
             }));
 
         } catch (err) {

@@ -92,9 +92,23 @@ describe("books routes", () => {
   });
 
   it("POST /api/books adds a book to the authenticated user's library", async () => {
+    const addedBook = {
+      id: 1,
+      user_id: 42,
+      google_books_id: "google-1",
+      title: "New Book",
+      authors: ["A. Writer"],
+      description: "Fresh.",
+      thumbnail: "https://example.com/cover.jpg",
+      published_date: "2024",
+      status: "to_read",
+      rating: null,
+      format: "physical",
+    };
+
     db.query
       .mockResolvedValueOnce({ rows: [] })
-      .mockResolvedValueOnce({ rows: [{ id: 1 }] });
+      .mockResolvedValueOnce({ rows: [addedBook] });
 
     const payload = {
       google_books_id: "google-1",
@@ -111,7 +125,7 @@ describe("books routes", () => {
     const response = await request(app).post("/api/books").send(payload);
 
     expect(response.status).toBe(201);
-    expect(response.body).toEqual({ message: "Book added to library" });
+    expect(response.body).toEqual(addedBook);
     expect(db.query).toHaveBeenNthCalledWith(
       1,
       "SELECT * FROM user_books WHERE user_id = $1 AND google_books_id = $2",
