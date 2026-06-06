@@ -12,18 +12,9 @@ const loansRoutes = require('./routes/loansRoutes');
 const contactsRoutes = require('./routes/contactsRoutes');
 const borrowedBooksRoutes = require('./routes/borrowedBooksRoutes');
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  process.env.CLIENT_URL,
-].filter(Boolean);
-
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(new Error("Not allowed by CORS"));
+    return callback(null, true);
   },
   credentials: true,
 }));
