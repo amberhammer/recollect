@@ -29,10 +29,10 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
                 )}
             </div>
             <div>
-                <p className="text-xl border-t-3 border-taupe-400 px-8 py-3"><span className="font-semibold">TITLE:</span> {bookData.book.title} ({bookData.book.published_date ? new Date(bookData.book.published_date).getFullYear() : "Unknown"})</p>
+                <p className="text-lg border-t-3 border-taupe-400 px-8 py-3"><span className="font-semibold">TITLE:</span> {bookData.book.title} ({bookData.book.published_date ? new Date(bookData.book.published_date).getFullYear() : "Unknown"})</p>
             </div>
             <div>
-                <p className="text-xl border-t-3 border-b-3 border-taupe-400 px-8 py-3"><span className="font-semibold">AUTHOR:</span> {bookData.book.authors.join(", ") || "Unknown"}</p>
+                <p className="text-lg border-t-3 border-b-3 border-taupe-400 px-8 py-3"><span className="font-semibold">AUTHOR:</span> {bookData.book.authors.join(", ") || "Unknown"}</p>
             </div>
             <div className="flex border-b-3 border-taupe-400">
                 <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
@@ -47,11 +47,11 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
             </div>
             {currentLoan ? (
                 <div className="flex border-b-3 border-taupe-300">
-                    <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
-                        <p className="text-lg">{getContactName(currentLoan)}</p>
+                    <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400 items-center flex">
+                        <p className="text-m">{getContactName(currentLoan)}</p>
                     </div>
-                    <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
-                        <p className="text-lg">{getLoanDate(currentLoan, "loaned_date")}</p>
+                    <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400 items-center flex">
+                        <p className="text-m">{getLoanDate(currentLoan, "loaned_date")}</p>
                     </div>
                     <div className="w-1/4 px-6 py-3">
                         <ReturnButton onReturn={onReturnLoan} />
@@ -59,13 +59,13 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
                 </div>
             ) : !hasAnyLoans ? (
                 <div className="flex">
-                    <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
+                    <div className="w-1/2 px-8 py-4 border-r-3 border-taupe-400">
                         <p className="text-lg">—</p>
                     </div>
-                    <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
+                    <div className="w-1/4 px-6 py-4 border-r-3 border-taupe-400">
                         <p className="text-lg">—</p>
                     </div>
-                    <div className="w-1/4 px-6 py-3">
+                    <div className="w-1/4 px-6 py-4">
                         <p className="text-lg">—</p>
                     </div>
                 </div>
@@ -73,22 +73,22 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
             <div>
                 {loanHistoryRows.map((loan) => (
                     <div key={loan.id} className="flex border-b-3 border-taupe-300">
-                        <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
-                            <p className="text-lg">{getContactName(loan)}</p>
+                        <div className="w-1/2 px-8 py-4 border-r-3 border-taupe-400">
+                            <p className="text-m">{getContactName(loan)}</p>
                         </div>
-                        <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400">
-                            <p className="text-lg">{getLoanDate(loan, "loaned_date")}</p>
+                        <div className="w-1/4 px-6 py-4 border-r-3 border-taupe-400">
+                            <p className="text-m">{getLoanDate(loan, "loaned_date")}</p>
                         </div>
-                        <div className="w-1/4 px-6 py-3">
-                            <p className="text-lg">{getLoanDate(loan, "returned_date")}</p>
+                        <div className="w-1/4 px-6 py-4">
+                            <p className="text-m">{getLoanDate(loan, "returned_date")}</p>
                         </div>
                     </div>
                 ))}
             </div>
             <div className="min-h-100 flex">
-                <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400" />
-                <div className="w-1/4 px-6 py-3 border-r-3 border-taupe-400" />
-                <div className="w-1/4 px-6 py-3" />
+                <div className="w-1/2 px-8 py-4 border-r-3 border-taupe-400" />
+                <div className="w-1/4 px-6 py-4 border-r-3 border-taupe-400" />
+                <div className="w-1/4 px-6 py-4" />
             </div>
         </div>
     );

@@ -200,7 +200,7 @@ export default function BookDetailPage() {
 
             <div className="flex-grow flex justify-center p-4 pb-0">
                 <div>
-                    <div className="w-[600px] mt-6 mb-2">
+                    <div className="w-[600px] mb-2">
                         <BackButton to={backTo} />
                     </div>
                     <BookDetailCard

@@ -32,8 +32,8 @@ export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate, on
     return (
         <div className="flex flex-row justify-end">
             <div className="flex flex-col w-80">
-                <div className="flex items-center gap-4 mb-2">
-                    <p className="text-xl font-semibold">★ {ratingDisplay}</p>
+                <div className="flex items-center gap-5 mb-2">
+                    <p className="text-xl font-semibold"><span className="text-yellow-500 text-2xl">★</span> {ratingDisplay}</p>
                     <button onClick={handleFavoriteToggle} className="text-3xl text-red-500 hover:scale-110 transition-transform">
                         {isFavorited ? "♥" : "♡"}
                     </button>
@@ -44,9 +44,8 @@ export default function LibraryBookControls({ book, onEdit, onFavoriteUpdate, on
             </div>
             <div>
                 <button
-                    className="bg-taupe-400 hover:bg-taupe-500 text-black font-bold py-2 px-4 rounded"
-                    onClick={onEdit}
-                >
+                    className="bg-taupe-300 hover:bg-taupe-400 text-black text-sm font-bold py-2 px-2 rounded"
+                    onClick={onEdit}>
                     ...
                 </button>
             </div>

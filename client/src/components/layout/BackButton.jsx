@@ -12,7 +12,7 @@ export default function BackButton({ to = "/", className = "" }) {
       type="button"
       onClick={handleBack}
       aria-label="Go back"
-      className={`flex items-center gap-2 bg-taupe-300 px-3 py-2 rounded-lg hover:border hover:border-taupe-400 ${className}`}
+      className={`flex items-center gap-2 bg-taupe-300 px-3 py-2 w-20 rounded-lg font-bold hover:bg-taupe-400 ${className}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

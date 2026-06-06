@@ -5,8 +5,8 @@ export default function BorrowedBookControls({ book, onEdit, onFavoriteToggle, o
     return (
         <div className="flex flex-row justify-end">
             <div className="flex flex-col w-80">
-                <div className="flex items-center gap-4 mb-2">
-                    <p className="text-xl font-semibold">★ {ratingDisplay}</p>
+                <div className="flex items-center gap-5 mb-2">
+                    <p className="text-xl font-semibold"><span className="text-yellow-500 text-2xl">★</span> {ratingDisplay}</p>
                     <button
                         type="button"
                         onClick={onFavoriteToggle}
@@ -20,7 +20,7 @@ export default function BorrowedBookControls({ book, onEdit, onFavoriteToggle, o
                     <button
                         type="button"
                         onClick={onReturn}
-                        className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded w-20"
+                        className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-4 rounded w-22"
                     >
                         Return
                     </button>
@@ -29,7 +29,7 @@ export default function BorrowedBookControls({ book, onEdit, onFavoriteToggle, o
             <div>
                 <button
                     type="button"
-                    className="bg-taupe-400 hover:bg-taupe-500 text-black font-bold py-2 px-4 rounded"
+                    className="bg-taupe-300 hover:bg-taupe-400 text-black text-sm font-bold py-2 px-2 rounded"
                     onClick={onEdit}
                 >
                     ...

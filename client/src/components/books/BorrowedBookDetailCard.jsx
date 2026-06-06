@@ -21,17 +21,17 @@ export default function BorrowedBookDetailCard({ book, onEdit, onFavoriteToggle,
                 />
             </div>
             <div>
-                <p className="text-xl border-t-3 border-taupe-400 px-8 py-3"><span className="font-semibold">TITLE:</span> {book.title} ({publishedYear})</p>
+                <p className="text-lg border-t-3 border-taupe-400 px-8 py-3"><span className="font-semibold">TITLE:</span> {book.title} ({publishedYear})</p>
             </div>
             <div>
-                <p className="text-xl border-t-3 border-b-3 border-taupe-400 px-8 py-3"><span className="font-semibold">AUTHOR:</span> {book.author || "Unknown Author"}</p>
+                <p className="text-lg border-t-3 border-b-3 border-taupe-400 px-8 py-3"><span className="font-semibold">AUTHOR:</span> {book.author || "Unknown Author"}</p>
             </div>
             <div className="flex border-b-3 border-taupe-400">
                 <div className="w-1/2 px-8 py-3 border-r-3 border-taupe-400">
-                    <p className="text-xl font-semibold">LENDER:</p>
+                    <p className="text-lg font-semibold">LENDER:</p>
                 </div>
                 <div className="w-1/2 px-8 py-3">
-                    <p className="text-xl font-semibold">BORROWED:</p>
+                    <p className="text-lg font-semibold">BORROWED:</p>
                 </div>
             </div>
             <div className="flex">

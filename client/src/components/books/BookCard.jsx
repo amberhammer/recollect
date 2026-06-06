@@ -24,7 +24,7 @@ export default function BookCard({ title, author, thumbnail, publishedDate }) {
             {thumbnail ? (
                 <img src={thumbnail} alt={`${title} cover`} className="h-auto m-2 rounded" />
             ) : (
-                <NoThumbnailPlaceholder className="h-20 w-14 m-2 shrink-0" textClassName="text-gray-900 text-xs" />
+                <NoThumbnailPlaceholder className="h-20 w-14 m-2 shrink-0" textClassName="text-gray-900 text-[9px]" />
             )}
             <div className="p-4 min-w-0">
                 <h3 className="text-md font-semibold truncate">{title}</h3>

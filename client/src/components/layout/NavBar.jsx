@@ -23,7 +23,7 @@ export default function NavBar() {
               onClick={handleLogout}
               aria-label="Log out"
               title="Log out"
-              className="bg-taupe-300 px-3 py-2 rounded-lg hover:border hover:border-taupe-400"
+              className="bg-taupe-300 px-3 py-2 rounded-lg hover:bg-taupe-400"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

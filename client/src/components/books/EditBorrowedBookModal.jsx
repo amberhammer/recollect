@@ -28,13 +28,13 @@ export default function EditBorrowedBookModal({ isOpen, onClose, onDelete, book,
             <div className="w-full max-w-md rounded-lg bg-white p-6" onClick={(e) => e.stopPropagation()}>
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-bold">Edit Borrowed Book</h2>
-                    <button type="button" onClick={onClose} className="text-gray-500 hover:text-gray-700">&times;</button>
+                    <button type="button" onClick={onClose} className="text-gray-500 text-xl hover:text-gray-700">&times;</button>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Status</label>
-                        <select value={status} onChange={(e) => setStatus(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                        <select value={status} onChange={(e) => setStatus(e.target.value)} className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="borrowed">Borrowed</option>
                             <option value="currently_reading">Currently Reading</option>
                             <option value="read">Completed</option>
@@ -42,8 +42,8 @@ export default function EditBorrowedBookModal({ isOpen, onClose, onDelete, book,
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Rating</label>
-                        <input type="number" min="1" max="5" value={rating} onChange={(e) => setRating(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" />
+                        <label className="block text-sm font-medium text-gray-700">Rating (1-5)</label>
+                        <input type="number" min="1" max="5" value={rating} onChange={(e) => setRating(e.target.value)} className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" />
                     </div>
 
                     <div>
@@ -55,7 +55,7 @@ export default function EditBorrowedBookModal({ isOpen, onClose, onDelete, book,
                                 setNewContactName("");
                             }}
                             disabled={contactsLoading}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+                            className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         >
                             <option value="">{contactsLoading ? "Loading contacts..." : "Select a lender"}</option>
                             {contacts.map((contact) => (
@@ -77,18 +77,18 @@ export default function EditBorrowedBookModal({ isOpen, onClose, onDelete, book,
                                 setNewContactName(e.target.value);
                                 setSelectedContactId("");
                             }}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+                            className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         />
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Borrowed Date</label>
-                        <input type="date" value={borrowedDate} onChange={(e) => setBorrowedDate(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" />
+                        <input type="date" value={borrowedDate} onChange={(e) => setBorrowedDate(e.target.value)} className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" />
                     </div>
 
                     <div className="flex items-center">
                         <input type="checkbox" checked={isFavorite} onChange={(e) => setIsFavorite(e.target.checked)} className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded" />
-                        <label className="ml-2 block text-sm text-gray-700">Mark as Favorite</label>
+                        <label className="ml-3 block text-sm text-gray-700">Mark as Favorite</label>
                     </div>
                 </div>
 
@@ -96,7 +96,7 @@ export default function EditBorrowedBookModal({ isOpen, onClose, onDelete, book,
                     <button type="button" onClick={handleSubmit} className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold h-10 py-2 px-4 rounded mr-2">
                         Save
                     </button>
-                    <button type="button" onClick={onDelete} className="bg-gray-500 hover:bg-gray-600 text-white font-bold h-10 py-2 px-4 rounded">
+                    <button type="button" onClick={onDelete} className="bg-red-600 hover:bg-red-700 text-white font-bold h-10 py-2 px-4 rounded">
                         Delete
                     </button>
                 </div>

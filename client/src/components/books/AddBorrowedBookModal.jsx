@@ -89,7 +89,7 @@ export default function AddBorrowedBookModal({ isOpen, onClose, onSave }) {
           </button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="relative">
             <SearchBar
               onSearch={handleSearch}
@@ -110,7 +110,9 @@ export default function AddBorrowedBookModal({ isOpen, onClose, onSave }) {
                     {book.thumbnail && (
                       <img src={book.thumbnail} alt={`${book.title} cover`} className="h-12 w-8 rounded object-cover" />
                     )}
-                    {!book.thumbnail && (<NoThumbnailPlaceholder />)}
+                    {!book.thumbnail && (
+                      <NoThumbnailPlaceholder className="h-12 w-8 shrink-0" textClassName="text-gray-900 text-[10px]" label="No Image" />
+                    )}
                     <span className="min-w-0">
                       <span className="block truncate font-semibold">{book.title}</span>
                       <span className="block truncate text-sm text-gray-600">
@@ -141,7 +143,7 @@ export default function AddBorrowedBookModal({ isOpen, onClose, onSave }) {
                 setNewContactName("");
               }}
               disabled={contactsLoading}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+              className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
             >
               <option value="">{contactsLoading ? "Loading contacts..." : "Select a contact"}</option>
               {contacts.map((contact) => (
@@ -163,7 +165,7 @@ export default function AddBorrowedBookModal({ isOpen, onClose, onSave }) {
                 setNewContactName(e.target.value);
                 setSelectedContactId("");
               }}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+              className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
             />
           </div>
 
@@ -173,7 +175,7 @@ export default function AddBorrowedBookModal({ isOpen, onClose, onSave }) {
               type="date"
               value={borrowedDate}
               onChange={(e) => setBorrowedDate(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+              className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
             />
           </div>
         </div>
