@@ -44,7 +44,7 @@ const updateBorrowedBook = async (id, payload, token) => {
 };
 
 const returnBorrowedBook = async (id, token) => {
-    const response = await API.patch(`/${id}/return`, {
+    const response = await API.patch(`/${id}/return`, null, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

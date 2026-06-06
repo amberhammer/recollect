@@ -26,7 +26,7 @@ const createLoan = async (payload, token) => {
 };
 
 const returnLoan = async (loanId, token) => {
-    const response = await API.patch(`/${loanId}/return`, {
+    const response = await API.patch(`/${loanId}/return`, null, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
