@@ -39,7 +39,6 @@ const addToLibrary = async (req, res) => {
     try {
         const userId = req.user.id;
         const { google_books_id, title, authors, description, thumbnail, published_date, status, rating, format } = req.body;
-        console.log("Adding book to library:", { userId, google_books_id, title, authors, description, thumbnail, published_date, status, rating, format });
         if (!google_books_id || !title) {
             return res.status(400).json({
                 message: "Required fields are missing",
