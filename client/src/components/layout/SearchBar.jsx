@@ -29,18 +29,19 @@ export default function SearchBar({ onSearch, placeholder = "Search...", buttonT
     return (
         <div className="w-full max-w-md mx-auto">
             <div className="flex border border-gray-300 rounded-lg overflow-hidden bg-white">
-                <input
-                    type="text"
-                    placeholder={placeholder}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    className="flex-1 px-3 py-2 text-gray-700 focus:outline-none"
-                />
-                <button
-                    onClick={handleSearch}
-                    className="px-4 py-2 bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-sm">
-                    {buttonText}
-                </button>
+                <form onSubmit={handleSearch} className="flex w-full">
+                    <input
+                        type="text"
+                        placeholder={placeholder}
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        className="flex-1 px-3 py-2 text-gray-700 focus:outline-none"
+                    />
+                    <button type="submit"
+                        className="px-4 py-2 bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-sm">
+                        {buttonText}
+                    </button>
+                </form>
             </div>
         </div>
     );
