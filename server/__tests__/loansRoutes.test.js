@@ -48,8 +48,8 @@ describe("loans routes", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual(rows);
     expect(db.query).toHaveBeenCalledWith(
-      "SELECT l.*, c.name AS contact_name FROM loans l JOIN contacts c ON l.contact_id = c.id WHERE l.user_book_id = $1 ORDER BY l.loaned_date DESC",
-      ["10"]
+      "SELECT l.*, c.name AS contact_name FROM loans l JOIN contacts c ON l.contact_id = c.id JOIN user_books ub ON l.user_book_id = ub.id WHERE l.user_book_id = $1 AND ub.user_id = $2 ORDER BY l.loaned_date DESC",
+      ["10", 42]
     );
   });
 
@@ -58,6 +58,8 @@ describe("loans routes", () => {
     const createdLoan = { ...insertedLoan, contact_name: "Sam", returned_date: null };
 
     db.query
+      .mockResolvedValueOnce({ rows: [{ id: 10 }] })
+      .mockResolvedValueOnce({ rows: [{ id: 5 }] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [insertedLoan] })
       .mockResolvedValueOnce({ rows: [createdLoan] });
@@ -72,11 +74,21 @@ describe("loans routes", () => {
     expect(response.body).toEqual(createdLoan);
     expect(db.query).toHaveBeenNthCalledWith(
       1,
+      "SELECT id FROM user_books WHERE id = $1 AND user_id = $2",
+      [10, 42]
+    );
+    expect(db.query).toHaveBeenNthCalledWith(
+      2,
+      "SELECT id FROM contacts WHERE id = $1 AND user_id = $2",
+      [5, 42]
+    );
+    expect(db.query).toHaveBeenNthCalledWith(
+      3,
       "SELECT * FROM loans WHERE user_book_id = $1 AND returned_date IS NULL",
       [10]
     );
     expect(db.query).toHaveBeenNthCalledWith(
-      2,
+      4,
       "INSERT INTO loans (user_book_id, contact_id, loaned_date) VALUES ($1, $2, $3) RETURNING *",
       [10, 5, "2026-01-01"]
     );
@@ -88,6 +100,7 @@ describe("loans routes", () => {
     const createdLoan = { ...insertedLoan, contact_name: "New Person", returned_date: null };
 
     db.query
+      .mockResolvedValueOnce({ rows: [{ id: 10 }] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [newContact] })
       .mockResolvedValueOnce({ rows: [] })
@@ -104,11 +117,16 @@ describe("loans routes", () => {
     expect(response.body).toEqual(createdLoan);
     expect(db.query).toHaveBeenNthCalledWith(
       1,
+      "SELECT id FROM user_books WHERE id = $1 AND user_id = $2",
+      [10, 42]
+    );
+    expect(db.query).toHaveBeenNthCalledWith(
+      2,
       "SELECT id FROM contacts WHERE user_id = $1 AND name = $2",
       [42, "New Person"]
     );
     expect(db.query).toHaveBeenNthCalledWith(
-      2,
+      3,
       "INSERT INTO contacts (user_id, name) VALUES ($1, $2) RETURNING id",
       [42, "New Person"]
     );
@@ -120,6 +138,7 @@ describe("loans routes", () => {
     const createdLoan = { ...insertedLoan, contact_name: "Known Person", returned_date: null };
 
     db.query
+      .mockResolvedValueOnce({ rows: [{ id: 10 }] })
       .mockResolvedValueOnce({ rows: [existingContact] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [insertedLoan] })
@@ -145,14 +164,17 @@ describe("loans routes", () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ error: "Contact and loaned date are required" });
+    expect(response.body).toEqual({ error: "Book, contact, and loaned date are required" });
     expect(db.query).not.toHaveBeenCalled();
   });
 
   it("POST /api/loans returns 400 when the book already has an active loan", async () => {
-    db.query.mockResolvedValueOnce({
-      rows: [{ id: 30, user_book_id: 10, returned_date: null }],
-    });
+    db.query
+      .mockResolvedValueOnce({ rows: [{ id: 10 }] })
+      .mockResolvedValueOnce({ rows: [{ id: 5 }] })
+      .mockResolvedValueOnce({
+        rows: [{ id: 30, user_book_id: 10, returned_date: null }],
+      });
 
     const response = await request(app).post("/api/loans").send({
       user_book_id: 10,
@@ -162,7 +184,44 @@ describe("loans routes", () => {
 
     expect(response.status).toBe(400);
     expect(response.body).toEqual({ error: "Book is already loaned out" });
-    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(db.query).toHaveBeenCalledTimes(3);
+  });
+
+  it("POST /api/loans returns 404 when the book is not owned by the user", async () => {
+    db.query.mockResolvedValueOnce({ rows: [] });
+
+    const response = await request(app).post("/api/loans").send({
+      user_book_id: 999,
+      contact_id: 5,
+      loaned_date: "2026-01-01",
+    });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({ error: "Book not found in your library" });
+    expect(db.query).toHaveBeenCalledWith(
+      "SELECT id FROM user_books WHERE id = $1 AND user_id = $2",
+      [999, 42]
+    );
+  });
+
+  it("POST /api/loans returns 400 when the contact is not owned by the user", async () => {
+    db.query
+      .mockResolvedValueOnce({ rows: [{ id: 10 }] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const response = await request(app).post("/api/loans").send({
+      user_book_id: 10,
+      contact_id: 999,
+      loaned_date: "2026-01-01",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ error: "Contact not found" });
+    expect(db.query).toHaveBeenNthCalledWith(
+      2,
+      "SELECT id FROM contacts WHERE id = $1 AND user_id = $2",
+      [999, 42]
+    );
   });
 
   it("PATCH /api/loans/:loanId/return marks a loan as returned", async () => {
@@ -179,13 +238,26 @@ describe("loans routes", () => {
     expect(response.body).toEqual(joinedLoan);
     expect(db.query).toHaveBeenNthCalledWith(
       1,
-      "UPDATE loans SET returned_date = CURRENT_DATE WHERE id = $1 RETURNING *",
-      ["20"]
+      "UPDATE loans l SET returned_date = CURRENT_DATE FROM user_books ub WHERE l.id = $1 AND l.user_book_id = ub.id AND ub.user_id = $2 RETURNING l.*",
+      ["20", 42]
     );
     expect(db.query).toHaveBeenNthCalledWith(
       2,
-      "SELECT l.*, c.name AS contact_name FROM loans l JOIN contacts c ON l.contact_id = c.id WHERE l.id = $1",
-      [20]
+      "SELECT l.*, c.name AS contact_name FROM loans l JOIN contacts c ON l.contact_id = c.id JOIN user_books ub ON l.user_book_id = ub.id WHERE l.id = $1 AND ub.user_id = $2",
+      [20, 42]
+    );
+  });
+
+  it("PATCH /api/loans/:loanId/return returns 404 when the loan is not owned by the user", async () => {
+    db.query.mockResolvedValueOnce({ rows: [] });
+
+    const response = await request(app).patch("/api/loans/999/return");
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({ error: "Loan not found" });
+    expect(db.query).toHaveBeenCalledWith(
+      "UPDATE loans l SET returned_date = CURRENT_DATE FROM user_books ub WHERE l.id = $1 AND l.user_book_id = ub.id AND ub.user_id = $2 RETURNING l.*",
+      ["999", 42]
     );
   });
 
