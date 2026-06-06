@@ -9,7 +9,9 @@
   "scripts": {
     "test": "jest",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "db:schema": "psql \"$DATABASE_URL\" -f db/schema.sql",
+    "db:reset": "psql \"$DATABASE_URL\" -f db/schema.sql"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
