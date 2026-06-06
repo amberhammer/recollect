@@ -19,7 +19,7 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
 
     return (
         <div className="bg-taupe-200 rounded-4xl rounded-b-none shadow-md w-full max-w-[600px] mt-4 sm:mt-6 overflow-hidden">
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 m-4 sm:m-8 mb-4 sm:mb-6 pt-4 sm:pt-8 min-w-0">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 m-4 sm:m-8 mb-4 sm:mb-6 min-w-0">
                 {bookData.book.thumbnail ? (
                     <img src={bookData.book.thumbnail} alt={`${bookData.book.title} cover`} className="h-36 sm:h-52 w-fit max-w-full rounded" />
                 ) : (

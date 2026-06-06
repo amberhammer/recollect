@@ -26,7 +26,7 @@ export default function LendModal({ book, contacts = [], contactsLoading = false
                     <h2 className="text-xl font-bold">Lend Book</h2>
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Borrower:</label>
                         <select
@@ -36,8 +36,7 @@ export default function LendModal({ book, contacts = [], contactsLoading = false
                                 setNewContactName("");
                             }}
                             disabled={contactsLoading}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
-                        >
+                            className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{contactsLoading ? "Loading contacts..." : "Select a borrower"}</option>
                             {contacts.map((contact) => (
                                 <option key={contact.id} value={contact.id}>
@@ -58,7 +57,7 @@ export default function LendModal({ book, contacts = [], contactsLoading = false
                                 setNewContactName(e.target.value);
                                 setSelectedContactId("");
                             }}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+                            className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         />
                     </div>
 
@@ -68,7 +67,7 @@ export default function LendModal({ book, contacts = [], contactsLoading = false
                             type="date"
                             value={loanedDate}
                             onChange={(e) => setLoanedDate(e.target.value)}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+                            className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                         />
                     </div>
                 </div>
@@ -76,8 +75,7 @@ export default function LendModal({ book, contacts = [], contactsLoading = false
                     <button
                         onClick={handleSubmit}
                         disabled={!hasBorrower || !loanedDate}
-                        className="bg-emerald-900 hover:bg-emerald-950 disabled:bg-gray-400 text-white font-bold h-10 py-2 px-4 rounded mr-2"
-                    >
+                        className="bg-emerald-900 hover:bg-emerald-950 disabled:bg-gray-400 text-white font-bold h-10 py-2 px-4 rounded mr-2">
                         Save
                     </button>
                     <button onClick={onClose} className="bg-gray-500 hover:bg-gray-600 text-white font-bold h-10 py-2 px-4 rounded">
