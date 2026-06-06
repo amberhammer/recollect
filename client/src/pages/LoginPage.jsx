@@ -8,10 +8,10 @@ export default function LoginPage() {
   const { login } = useAuth();
 
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,11 +23,19 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    if (!formData.email.trim() || !formData.password) {
+      setError("Email and password are required.");
+      return;
+    }
+
     try {
       await login(formData);
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);
+      setError(error?.message || error || "Unable to log in. Please check your email and password.");
     }
   };
 
@@ -40,6 +48,11 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
         <h1 className="text-3xl font-bold mb-6 text-center text-taupe-900">Log in</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          {error && (
+            <p className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+              {error}
+            </p>
+          )}
           <input type="email" id="email" name="email" placeholder="Email" required className="border p-3 rounded-lg" value={formData.email} onChange={handleChange} />
           <input type="password" id="password" name="password" placeholder="Password" required className="border p-3 rounded-lg" value={formData.password} onChange={handleChange} />
           <button className="bg-emerald-900 text-white p-3 rounded-lg hover:bg-emerald-950">Log in</button>
