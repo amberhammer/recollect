@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function SearchBar({ onSearch, placeholder = "Search...", buttonText = "Search" }) {
+export default function SearchBar({ onSearch, placeholder = "Search...", buttonText = "Search", className = "" }) {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -27,7 +27,7 @@ export default function SearchBar({ onSearch, placeholder = "Search...", buttonT
     };
 
     return (
-        <div className="w-full max-w-md mx-auto">
+        <div className={`w-full max-w-md mx-auto ${className}`}>
             <div className="flex border border-gray-300 rounded-lg overflow-hidden bg-white">
                 <form onSubmit={handleSearch} className="flex w-full">
                     <input

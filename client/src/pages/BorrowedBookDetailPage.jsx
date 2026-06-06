@@ -149,9 +149,9 @@ export default function BorrowedBookDetailPage() {
         <div className="min-h-screen flex flex-col">
             <NavBar />
 
-            <div className="flex-grow flex justify-center p-4 pb-0">
-                <div>
-                    <div className="w-[600px] mt-6 mb-2">
+            <div className="flex-grow flex justify-center px-2 py-4 sm:p-4 sm:pb-0">
+                <div className="w-full max-w-[600px] min-w-0">
+                    <div className="w-full mt-4 sm:mt-6 mb-2">
                         <BackButton to={backTo} />
                     </div>
                     <BorrowedBookDetailCard

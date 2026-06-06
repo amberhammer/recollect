@@ -7,13 +7,13 @@ export default function BookGrid({ displayName, books, backTo = "/", headerActio
 
     return (
         <div className="flex-grow flex justify-center p-4">
-            <div>
-                <div className="grid grid-cols-[170px_1fr_170px] items-center mb-6 w-[700px]">
+            <div className="w-full max-w-[700px]">
+                <div className="grid grid-cols-[120px_1fr_120px] md:grid-cols-[170px_1fr_170px] items-center mb-6 w-full">
                     <BackButton to={backTo} />
                     <h2 className="text-2xl font-bold text-center">{displayName}</h2>
                     <div className="flex justify-end">{headerAction}</div>
                 </div>
-                <div className="grid grid-cols-2 gap-5 max-h-[570px] w-[700px] overflow-y-auto no-scrollbar">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-h-[570px] w-full overflow-y-auto no-scrollbar">
                     {books.map((book) => (
                         <Link
                             key={book.id || book.google_books_id}

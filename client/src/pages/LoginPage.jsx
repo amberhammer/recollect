@@ -45,7 +45,7 @@ export default function LoginPage() {
         <h1 className="text-4xl font-bold mb-2 text-taupe-900 text-center">recollect</h1>
         <p className="text-lg text-taupe-700 mb-8 text-center">Track your library and loans!</p>
       </div>
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+      <div className="w-full max-w-[90vw] sm:max-w-md bg-white p-8 rounded-xl shadow-lg">
         <h1 className="text-3xl font-bold mb-6 text-center text-taupe-900">Log in</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           {error && (

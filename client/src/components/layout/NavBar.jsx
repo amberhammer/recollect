@@ -14,10 +14,10 @@ export default function NavBar() {
   return (
     <header>
       <nav className="bg-taupe-200 text-black p-4">
-        <div className="container mx-auto flex items-center justify-between">
-          <a href="/" className="text-2xl font-bold">recollect</a>
-          <SearchBar />
-          <div className="flex items-center gap-4">
+        <div className="container mx-auto flex items-center justify-between gap-3">
+          <a href="/" className="hidden md:block text-2xl font-bold shrink-0">recollect</a>
+          <SearchBar className="max-w-[240px] sm:max-w-xs md:max-w-sm lg:max-w-md" />
+          <div className="flex items-center gap-4 shrink-0">
             <button
               type="button"
               onClick={handleLogout}

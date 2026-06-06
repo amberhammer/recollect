@@ -58,7 +58,8 @@ export default function CollectionPage() {
       onClick={() => setShowAddBorrowedBookModal(true)}
       className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold py-2 px-3 rounded text-sm"
     >
-      Add Borrowed Book
+      <span className="hidden sm:inline">Add Borrowed Book</span>
+      <span className="sm:hidden">+ Add</span>
     </button>
   ) : null;
 

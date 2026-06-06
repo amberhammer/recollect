@@ -20,7 +20,7 @@ export default function BookCard({ title, author, thumbnail, publishedDate }) {
         }
     }
     return (
-        <div className="bg-taupe-300 flex rounded-lg h-24 shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <div className="bg-taupe-300 flex rounded-lg h-24 w-full shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
             {thumbnail ? (
                 <img src={thumbnail} alt={`${title} cover`} className="h-auto m-2 rounded" />
             ) : (

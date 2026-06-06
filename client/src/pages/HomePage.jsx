@@ -10,9 +10,9 @@ export default function HomePage() {
             <NavBar />
 
             <div className="flex-grow flex justify-center p-4">
-                <div>
+                <div className="w-full max-w-[700px] md:max-w-[560px] lg:max-w-[700px]">
                     <h2 className="text-2xl font-bold mb-6 text-center">Your Library</h2>
-                    <div className="grid grid-cols-2 gap-5 h-[550px] w-[700px]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 h-auto sm:h-[550px] w-full">
                         <Link to="/library" style={{ textDecoration: 'none', color: 'inherit' }}>
                             <Cabinet collectionName="All Books" />
                         </Link>

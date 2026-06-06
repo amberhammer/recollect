@@ -26,7 +26,7 @@ export default function EditLibraryEntryModal({ isOpen, onClose, book, onSave, o
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
-            <div className="w-full max-w-md rounded-lg bg-white p-6" onClick={(e) => e.stopPropagation()}>
+            <div className="w-full max-w-[90vw] lg:max-w-md rounded-lg bg-white p-6" onClick={(e) => e.stopPropagation()}>
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-bold">Edit Library Entry</h2>
                     <button onClick={onClose} className="text-gray-500 text-xl hover:text-gray-700">&times;</button>
