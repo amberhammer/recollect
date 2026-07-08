@@ -14,7 +14,7 @@ export default function BookDetailCard({ bookData, isInLibrary, onAddToLibrary, 
     const getContactName = (loan) => loan?.contact_name || loan?.name || emptyValue;
     const formatDate = (date) => date ? String(date).slice(0, 10) : emptyValue;
     const getLoanDate = (loan, dateKey) => formatDate(loan?.[dateKey]);
-    const loanGridColumns = "grid grid-cols-[minmax(0,1fr)_96px_96px] sm:grid-cols-[minmax(0,1fr)_128px_128px]";
+    const loanGridColumns = "grid grid-cols-[minmax(0,1fr)_150px_150px] sm:grid-cols-[minmax(0,1fr)_128px_128px]";
     const controlsWrapperClass = "w-full min-w-0 [&>div]:w-full [&>div]:flex-col sm:[&>div]:flex-row [&>div]:items-start sm:[&>div]:items-stretch [&>div]:gap-2 sm:[&>div]:gap-0 [&_.w-80]:w-full sm:[&_.w-80]:w-80 [&_.text-xl]:text-base sm:[&_.text-xl]:text-xl [&_.text-3xl]:text-2xl sm:[&_.text-3xl]:text-3xl";
 
     return (
