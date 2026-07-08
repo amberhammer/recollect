@@ -42,7 +42,7 @@ export default function EditLibraryEntryModal({ isOpen, onClose, book, onSave, o
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Rating</label>
+                        <label className="block text-sm font-medium text-gray-700">Rating (1-5)</label>
                         <input type="number" min="1" max="5" value={rating} onChange={(e) => setRating(e.target.value)} className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500" />
                     </div>
 
